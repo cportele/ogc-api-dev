@@ -965,7 +965,7 @@ components:
         stylesheets:
           type: array
           items:
-            $ref: '#/components/schemas/style-encoding'
+            $ref: '#/components/schemas/stylesheet'
           example:
             - title: 'Mapbox Style'
               version: '8'
@@ -1003,7 +1003,7 @@ components:
               attributes:
                 - id: 'f_code'
                   type: 'string'
-    style-encoding:
+    stylesheet:
       type: object
       required:
         - title
