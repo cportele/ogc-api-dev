@@ -962,7 +962,7 @@ components:
         version:
           type: string
           example: 1.0.0
-        encodings:
+        stylesheets:
           type: array
           items:
             $ref: '#/components/schemas/style-encoding'
