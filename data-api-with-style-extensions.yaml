@@ -1,0 +1,649 @@
+openapi: 3.0.2
+# Revisions:
+# 2019-05-09 initial version
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/cportele/opf-features-api/1.0.0
+info:
+  title: |
+    Open Portrayal Framework Features/Tiles API (DRAFT)
+  description: |
+    This is a draft of the OGC Testbed-15 Features/Tiles API extensions 
+    to support styles in the Open Portrayal Framework task.
+    
+    The extensions are the following.
+    * The feature collection metadata (path `/collections/{collectionId}`) 
+    has been extended by the set of applicable styles (member `styles`, same
+    value as in `/styles` in the Style API) and a default style 
+    (member `defaultStyle`, the style id).
+    * The PATCH operation on the feature collection metadata 
+    (path `/collections/{collectionId}`) has been added. Only `styles` and
+    `defaultStyle` may be updated.
+    * The queryables resource (path `/collections/{collectionId}/queryables`)
+    has been added to support clients like visual style editors to construct 
+    expressions for selection criteria in queries on features in the collection.
+
+    For more background information see [the Vector Tiles Pilot Extension Engineering 
+    Report](http://docs.opengeospatial.org/per/18-101.html#StylesAPI).
+
+  version: "1.0.0"
+  contact:
+    name: Clemens Portele
+    email: portele@interactive-instruments.de
+  license:
+    name: OGC License
+    url: 'https://raw.githubusercontent.com/opengeospatial/WFS_FES/master/LICENSE'
+tags:
+  - name: Capabilities
+    description: |
+      essential characteristics of this API
+  - name: Features
+    description: |
+      access to data (features)
+  - name: Tiles
+    description: |
+      access to data (features), partitioned into a hierarchy of tiles
+paths:
+  '/':
+    get:
+      tags:
+        - Capabilities
+      summary: landing page
+      description: |
+        The landing page provides links to the API definition, the conformance
+        statements and to the feature collections in this dataset.
+      operationId: getLandingPage
+      parameters:
+        - $ref: '#/components/parameters/f-json-html'
+      responses:
+        '200':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/LandingPage'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/conformance':
+    get:
+      summary: information about specifications that this API conforms to
+      description: |
+        A list of all requirements classes specified in a standard that the 
+        server conforms to.
+      operationId: getConformanceDeclaration
+      parameters:
+        - $ref: '#/components/parameters/f-json'
+      tags:
+        - Capabilities
+      responses:
+        '200':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ConformanceDeclaration'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections':
+    get:
+      tags:
+        - Capabilities
+      summary: the feature collections in the dataset
+      operationId: getCollections
+      parameters:
+        - $ref: '#/components/parameters/f-json-html'
+      responses:
+        '200':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/Collections'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections/{collectionId}':
+    get:
+      tags:
+        - Capabilities
+      summary: describe a feature collection
+      operationId: describeCollection
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/f-json-html'
+      responses:
+        '200':
+          description: |
+            Metadata about the collection including style information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/collectionInfo'
+            text/html:
+              schema:
+                type: string
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+    patch:
+      tags:
+        - Capabilities
+      summary: |
+        update parts of the style metadata
+      description: |
+        Update selected elements of the metadata for 
+        the collection with the id `collectionId`.
+        
+        The only members that may be updated at this 
+        time are `styles` and `defaultStyle`.
+        
+        This operation is only available to registered 
+        users.
+        
+        TODO - Work on the details
+      operationId: patchCollectionMetadata
+      security:
+        - BasicAuth: []
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+      requestBody:
+        description: |
+          TODO
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patch'
+      responses:
+        '204':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/Updated'
+        '401':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/UnauthorizedAccess'
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections/{collectionId}/queryables':
+    get:
+      tags:
+        - Capabilities
+      summary: fetch the queryable properties of the feature collection
+      description: |
+        This operation supports clients to construct expressions for 
+        selection criteria in queries on features in the collection. 
+        
+        The response is an array with the queryable properties of 
+        the feature collection. "Queryable" means that the property may
+        be used in query expressions, for example, in a CQL query 
+        expression or as part of a selection criteria in a SLD/SE or
+        Mapbox styling rule.
+        
+        Often the list will be a subset of all available properties 
+        in the features and be restricted to those properties that
+        are, for example, indexed in the backend datastore to support
+        performant queries.
+        
+        For each queryable property the following information is provided.
+        * **id** (required) - the property name for use in expressions 
+        * **type** (required) - the data type of the property, one of
+          * string
+          * uri
+          * enum
+          * number
+          * integer
+          * date
+          * dateTime
+          * boolean
+        * **description** (optional) - a description of the property
+        * **required** (optional) - indicator whether the property is 
+        always present in features
+        * **mediaTypes** (optional) - in general, the representation of 
+        the queryables is meant to be independent of the feature encoding;
+        however, this is not always the case; for example, length restrictions 
+        or namespace prefixes may result in different property identifiers 
+        for the same property; to support this, the definition of a queryable
+        may be restricted to one or more feature encodings (media types).
+        * **pattern** (optional, only for "string" and "uri") - a regular 
+        expression to validate the values of the property
+        * **values** (required, only for "enum") - an array of valid values 
+        of the property
+        * **range** (optional, only for "number", "integer", "date" and 
+        "dateTime") - the range of valid values expressed as an array with
+        two items; open ranges can be expressed using `null` for the minimum
+        or maximum value
+        
+        Note that this is separate from providing a complete schema for 
+        the features in the collection. A schema provides a complete syntactic 
+        definition of a specific feature encoding, typically for validation 
+        purposes. Schema languages like XML Schema or JSON Schema are 
+        much richer and support more complex syntactic rules, but are also 
+        more complex to parse.
+        
+      operationId: getQueryables
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/f-json-html'
+      responses:
+        '200':
+          description: |
+            The list of queryable properties for the features in the collection.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/queryables'
+            text/html:
+              schema:
+                type: string
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections/{collectionId}/items':
+    get:
+      tags:
+        - Features
+      summary: retrieve features of the feature collection
+      operationId: getFeatures
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/f-json-html'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/limit'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/offset'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/bbox'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/datetime'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/resultType'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
+        - name: f_code
+          in: query
+          description: Filter the collection by f_code
+          required: false
+          style: form
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Information about the feature collection plus the first features
+            matching the selection parameters.
+          content:
+            application/geo+json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/featureCollectionGeoJSON'
+            text/html:
+              schema:
+                type: string
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections/{collectionId}/items/{featureId}':
+    get:
+      tags:
+        - Features
+      summary: fetch a feature
+      operationId: getFeature
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/featureId'
+        - $ref: '#/components/parameters/f-json-html'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
+      responses:
+        '200':
+          description: |
+            A feature.
+          content:
+            application/geo+json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/featureGeoJSON'
+            text/html:
+              schema:
+                type: string
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/tilingSchemes':
+    get:
+      tags:
+        - Tiles
+      summary: fetch all available tiling schemes
+      operationId: getTilingSchemes
+      parameters:
+        - $ref: '#/components/parameters/f-json'
+      responses:
+        '200':
+          description: |
+            A list of tiling schemes.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingSchemes'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/tilingSchemes/{tilingSchemeId}':
+    get:
+      tags:
+        - Tiles
+      summary: fetch a tiling scheme by id
+      operationId: getTilingScheme
+      parameters:
+        - $ref: '#/components/parameters/tilingSchemeId'
+        - $ref: '#/components/parameters/f-json'
+      responses:
+        '200':
+          description: A tiling scheme.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingScheme'
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/tiles':
+    get:
+      tags:
+        - Tiles
+      summary: fetch all available tiling schemes
+      operationId: getTilingSchemesAlt
+      parameters:
+        - $ref: '#/components/parameters/f-json'
+      responses:
+        '200':
+          description: |
+            A list of tiling schemes.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingSchemes'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/tiles/{tilingSchemeId}':
+    description: something
+    get:
+      tags:
+        - Tiles
+      summary: fetch a tiling scheme used to partition the dataset into tiles
+      operationId: getTilingSchemeAlt
+      parameters:
+        - $ref: '#/components/parameters/tilingSchemeId'
+        - $ref: '#/components/parameters/f-json'
+      responses:
+        '200':
+          description: |
+            A tiling scheme used to partition the dataset into tiles.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingScheme'
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/tiles/{tilingSchemeId}/{level}/{row}/{col}':
+    get:
+      tags:
+        - Tiles
+      summary: retrieve a tile of the dataset
+      description: |
+        The tile in the requested tiling scheme, on the requested zoom level in
+        the tiling scheme, with the requested grid coordinates (row, column) is
+        returned. Each collection of the dataset is returned as a separate
+        layer. The collections and the feature properties to include in the tile
+        representation can be limited using query parameters.
+      operationId: getTileDataset
+      parameters:
+        - $ref: '#/components/parameters/tilingSchemeId'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/level'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/row'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/col'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/collections'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
+        - $ref: '#/components/parameters/f-mvt'
+      responses:
+        '200':
+          description: |
+            A multi-layer tile of the dataset.
+          content:
+            application/vnd.mapbox-vector-tile:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/mvt'
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections/{collectionId}/tiles':
+    get:
+      tags:
+        - Tiles
+      summary: |
+        fetch all tiling schemes available for the collection
+      operationId: getTilingSchemesCollection
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/f-json'
+      responses:
+        '200':
+          description: A list of tiling schemes available for the collection.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingSchemes'
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections/{collectionId}/tiles/{tilingSchemeId}':
+    get:
+      tags:
+        - Tiles
+      summary: |
+        fetch a tiling scheme used to partition the collection into tiles
+      operationId: getTilingSchemeCollection
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/tilingSchemeId'
+        - $ref: '#/components/parameters/f-json'
+      responses:
+        '200':
+          description: |
+            A tiling scheme used to partition the collection into tiles.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingScheme'
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+  '/collections/{collectionId}/tiles/{tilingSchemeId}/{level}/{row}/{col}':
+    get:
+      tags:
+        - Tiles
+      summary: fetch a tile of the collection
+      description: |
+        The tile in the requested tiling scheme, on the requested zoom level in
+        the tiling scheme, with the requested grid coordinates (row, column) is
+        returned. The tile has a single layer with all selected features in the
+        bounding box of the tile. The feature properties to include in the tile
+        representation can be limited using a query parameter.
+      operationId: getTileCollection
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - $ref: '#/components/parameters/tilingSchemeId'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/level'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/row'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/col'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/datetime'
+        - $ref: '#/components/parameters/f-mvt-json'
+        - name: f_code
+          in: query
+          description: Filter the collection by f_code
+          required: false
+          style: form
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A tile of the collection.
+          content:
+            application/geo+json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/featureCollectionGeoJSON'
+            application/vnd.mapbox-vector-tile:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/mvt'
+        '404':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '500':
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+components:
+  schemas:
+    collectionInfo:
+      allOf:
+      - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/collectionInfo'      
+      - type: object
+        properties:
+          styles:
+            $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/style-set'
+          defaultStyle:
+            type: string
+            description: |
+              the style id of a recommended default style to use for this collection
+            example: 'topographic'
+    collectionList:
+      type: string
+      enum:
+        - aeronauticcrv
+        - aeronauticsrf
+        - agriculturepnt
+        - agriculturesrf
+        - culturepnt
+        - culturesrf
+        - facilitypnt
+        - facilitysrf
+        - hydrographycrv
+        - hydrographypnt
+        - hydrographysrf
+        - industrysrf
+        - informationpnt
+        - militarysrf
+        - o2s_a
+        - o2s_l
+        - o2s_p
+        - physiographycrv
+        - recreationcrv
+        - recreationpnt
+        - recreationsrf
+        - settlementpnt
+        - settlementsrf
+        - structurecrv
+        - structurepnt
+        - structuresrf
+        - transportationgroundcrv
+        - transportationgroundpnt
+        - transportationgroundsrf
+        - transportationwatercrv
+        - utilityinfrastructurecrv
+        - utilityinfrastructurepnt
+        - vegetationsrf
+    patch:
+      type: object
+      description: |
+        TODO add details
+  parameters:
+    f-json-html:
+      name: f
+      in: query
+      description: |
+        The format of the response. If no value is provided, the standard http
+        rules apply, i.e., the accept header is used to determine the format.
+
+        Pre-defined values are "json" and "html". The response to other 
+        values is determined by the server.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        enum:
+          - json
+          - html
+      example: json
+    f-mvt-json:
+      name: f
+      in: query
+      description: |
+        The format of the response. If no value is provided, the standard http
+        rules apply, i.e., the accept header is used to determine the format.
+        
+        Pre-defined values are "mvt" for a Mapbox Vector Tile and "json" for a
+        GeoJSON feature collection. The response to other values is determined 
+        by the server.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        enum:
+          - json
+          - mvt
+      example: json
+    f-json:
+      name: f
+      in: query
+      description: |
+        The format of the response. If no value is provided, the standard http
+        rules apply, i.e., the accept header is used to determine the format.
+        
+        The only pre-defined value is "json". The response to other values is 
+        determined by the server.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        enum:
+          - json
+      example: json
+    f-mvt:
+      name: f
+      in: query
+      description: |
+        The format of the response. If no value is provided, the standard http
+        rules apply, i.e., the accept header is used to determine the format.
+        
+        The only pre-defined value is "mvt" to return a Mapbox Vector Tile. 
+        The response to other values is determined by the server.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        enum:
+          - mvt
+      example: mvt
+    collections:
+      name: collections
+      in: query
+      description: |
+        The collections that should be included in the tile. The parameter value
+        is a list of collection identifiers.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/collectionList'
+    collectionId:
+      name: collectionId
+      in: path
+      description: |
+        local identifier of a collection
+      required: true
+      schema:
+        $ref: '#/components/schemas/collectionList'
+    tilingSchemeId:
+      name: tilingSchemeId
+      in: path
+      description: |
+        Local identifier of a specific tiling scheme. A list of all available
+        tilingSchemeIds can be found under the /tiles path or below. The default
+        Tiling Scheme is the Google Maps Tiling Scheme.
+      required: true
+      schema:
+        type: string
+        enum:
+          - default
+      example: default
