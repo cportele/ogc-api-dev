@@ -125,10 +125,53 @@ paths:
         The only members that may be updated at this 
         time are `styles` and `defaultStyle`.
         
+        The PATCH semantics in this operation are defined by 
+        RFC 7396 (JSON Merge Patch). From the specification:
+        
+        _"A JSON merge patch document describes changes to be 
+        made to a target JSON document using a syntax that 
+        closely mimics the document being modified. Recipients
+        of a merge patch document determine the exact set of 
+        changes being requested by comparing the content of 
+        the provided patch against the current content of the 
+        target document. If the provided merge patch contains 
+        members that do not appear within the target, those 
+        members are added. If the target does contain the 
+        member, the value is replaced. Null values in the 
+        merge patch are given special meaning to indicate 
+        the removal of existing values in the target."_
+        
+        Some examples:
+        
+        To add or update the default style, just send
+        
+        ```
+        {
+          "defaultStyle": "night"
+        }
+        ```
+        
+        To remove the default style, send 
+
+        ```
+        {
+          "defaultStyle": null
+        }
+        ```
+        
+        For arrays the complete array needs to be sent. I.e., to
+        update the list of styles, send the complete new array value.
+
+        To remove all styles, send
+        
+        ```
+        {
+          "styles": null
+        }
+        ```
+        
         This operation is only available to registered 
         users.
-        
-        TODO - Work on the details
       operationId: patchCollectionMetadata
       security:
         - BasicAuth: []
@@ -136,18 +179,35 @@ paths:
         - $ref: '#/components/parameters/collectionId'
       requestBody:
         description: |
-          TODO
+          The updated style information for the collection.
         content:
-          application/json:
+          application/merge-patch+json:
             schema:
-              $ref: '#/components/schemas/patch'
+              $ref: '#/components/schemas/collectionInfo-patch'
       responses:
         '204':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/Updated'
+        '400':
+          description: |
+            Malformed patch document.
         '401':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/UnauthorizedAccess'
         '404':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+        '415':
+          description: |
+            Unsupported patch document.
+          headers:
+            Accept-Patch:
+              description: |-
+                supported patch document media types
+              schema:
+                type: string
+        '422':
+          description: |
+            Unprocessable request. The patch document appears 
+            to be valid, but the server is incapable of processing 
+            the request.
         '500':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
   '/collections/{collectionId}/queryables':
@@ -501,6 +561,17 @@ components:
             description: |
               the style id of a recommended default style to use for this collection
             example: 'topographic'
+    collectionInfo-patch:
+      type: object
+      properties:
+        styles:
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/style-set'
+        defaultStyle:
+          type: string
+          nullable: true
+          description: |
+            the style id of a recommended default style to use for this collection
+          example: 'topographic'
     collectionList:
       type: string
       enum:
@@ -537,10 +608,6 @@ components:
         - utilityinfrastructurecrv
         - utilityinfrastructurepnt
         - vegetationsrf
-    patch:
-      type: object
-      description: |
-        TODO add details
   parameters:
     f-json-html:
       name: f
