@@ -12,9 +12,9 @@ servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-style-api/1.0.0
 info:
-  title: |
+  title: |-
     Open Portrayal Framework Style API (DRAFT)
-  description: |
+  description: |-
     This is a draft of the OGC Testbed-15 Style API in the Open 
     Portrayal Framework task. The Style API is a Web API for 
     fetching and managing styles. 
@@ -99,19 +99,19 @@ info:
     url: 'https://raw.githubusercontent.com/opengeospatial/WFS_FES/master/LICENSE'
 tags:
   - name: Capabilities
-    description: |
+    description: |-
       Information about this API
   - name: Use styles
-    description: |
+    description: |-
       Discover and fetch styles
   - name: Manage styles
-    description: |
+    description: |-
       Create, update and delete styles; only for style authors
   - name: Fetch resources
-    description: |
+    description: |-
       Fetch symbols/sprites
   - name: Manage resources
-    description: |
+    description: |-
       Create, update and delete symbols/sprites; only for style authors
 paths:
   '/':
@@ -119,7 +119,7 @@ paths:
       tags:
         - Capabilities
       summary: landing page
-      description: |
+      description: |-
         The landing page provides links to the API definition, 
         the Conformance statements and the available styles.
       operationId: getLandingPage
@@ -127,7 +127,7 @@ paths:
         - $ref: '#/components/parameters/f-html-json'
       responses:
         '200':
-          description: |
+          description: |-
             Links to the API capabilities and the style set 
             shared by this API.
           content:
@@ -163,20 +163,20 @@ paths:
               schema:
                 type: string
         '400':
-          description: |
+          description: |-
             invalid or unknown query parameters
         '406':
-          description: |
+          description: |-
             The media types accepted by the client are not 
             supported for this resource
   '/conformance':
     get:
       tags:
         - Capabilities
-      summary: |
+      summary: |-
         information about requirements classes that this API 
         conforms to
-      description: |
+      description: |-
         List of all requirements classes specified in a specification 
         that the server conforms to.
       operationId: getRequirementsClasses
@@ -184,7 +184,7 @@ paths:
         - $ref: '#/components/parameters/f-json'
       responses:
         '200':
-          description: |
+          description: |-
             the URIs of all requirements classes supported by 
             this API
           content:
@@ -204,20 +204,20 @@ paths:
                 - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/sld-11'
 
         '400':
-          description: |
+          description: |-
             invalid or unknown query parameters
         '406':
-          description: |
+          description: |-
             The media types accepted by the client are not 
             supported for this resource
   '/styles':
     get:
       tags:
         - Use styles
-      summary: |
+      summary: |-
         information about the available styles
       operationId: getStyleSet
-      description: |
+      description: |-
         This operation fetches the set of styles available. For
         each style the id, a title, links to the stylesheet of
         the style in each supported encoding, and the link to the 
@@ -237,19 +237,19 @@ paths:
               schema:
                 $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/style-set'
         '400':
-          description: |
+          description: |-
             invalid or unknown query parameters
         '406':
-          description: |
+          description: |-
             The media types accepted by the client are not 
             supported for this resource
     post:
       tags:
         - Manage styles
-      summary: | 
+      summary: |- 
         adds a new style
       operationId: addStyle
-      description: | 
+      description: |- 
         Adds a style to the style repository or just validates
         a style.
         
@@ -287,28 +287,28 @@ paths:
         - $ref: '#/components/parameters/validate'
       responses:
         '201':
-          description: |
+          description: |-
             style created
           headers:
             Location:
               schema:
                 type: string
-              description: |
+              description: |-
                 URI of the new style
         '204':
-          description: |
+          description: |-
             style validated successfully, no style has been created
         '400':
-          description: |
+          description: |-
             invalid input, the style is invalid
         '401':
-          description: |
+          description: |-
             unauthorized access
         '409':
-          description: |
+          description: |-
             a style with that id already exists
       requestBody:
-        description: |
+        description: |-
           Stylesheet to be added
         content:
           application/vnd.mapbox.style+json:
@@ -324,9 +324,9 @@ paths:
     get:
       tags:
         - Use styles
-      summary: |
+      summary: |-
         fetch a style by id
-      description: |
+      description: |-
         Fetches the style with identifier `styleId`. The set of 
         available styles can be retrieved at `/styles`.
     
@@ -337,7 +337,7 @@ paths:
         - $ref: '#/components/parameters/f-style'
       responses:
         '200':
-          description: |
+          description: |-
             The style
           content:
             application/vnd.mapbox.style+json:
@@ -350,18 +350,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/sld-11'
         '404':
-          description: |
+          description: |-
             style not found
         '406':
-          description: |
+          description: |-
             The requested style encoding is not supported 
             for this style
     put:
       tags:
         - Manage styles
-      summary: |
+      summary: |-
         replace a style or add a new style
-      description: |
+      description: |-
         Replace an existing style with the id `styleId`. If no 
         such style exists, a new style with that id is added.
         
@@ -380,7 +380,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/styleId'
       requestBody:
-        description: |
+        description: |-
           A single style in one of the supported style encodings.
         content:
             application/vnd.mapbox.style+json:
@@ -394,17 +394,17 @@ paths:
                 $ref: '#/components/schemas/sld-11'
       responses:
         '204':
-          description: |
+          description: |-
             style updated or created
         '401':
-          description: |
+          description: |-
             unauthorized access
     delete:
       tags:
         - Manage styles
-      summary: |
+      summary: |-
         delete a style
-      description: |
+      description: |-
         Delete an existing style with the id `styleId`. If no 
         such style exists, an error is returned.
         
@@ -420,21 +420,21 @@ paths:
         - $ref: '#/components/parameters/styleId'
       responses:
         '204':
-          description: |
+          description: |-
             style deleted
         '401':
-          description: |
+          description: |-
             unauthorized access
         '404':
-          description: |
+          description: |-
             style not found
   '/styles/{styleId}/metadata':
     get:
       tags:
         - Use styles
-      summary: |
+      summary: |-
         fetch the metadata about a style
-      description: |
+      description: |-
         Style metadata is essential information about a style
         in order to support users to discover and select styles
         for rendering their data and for visual style editors 
@@ -451,21 +451,21 @@ paths:
         - $ref: '#/components/parameters/f-json'
       responses:
         '200':
-          description: |
+          description: |-
             The metdata for the style.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/style-metadata'
         '404':
-          description: |
+          description: |-
             style not found
     put:
       tags:
         - Manage styles
-      summary: |
+      summary: |-
         update the metadata document of a style
-      description: |
+      description: |-
         Update the style metadata for the style with the 
         id `styleId`. This operation updates the complete
         metadata document.
@@ -478,7 +478,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/styleId'
       requestBody:
-        description: |
+        description: |-
           The metadata of a style.
         content:
           application/json:
@@ -486,20 +486,20 @@ paths:
               $ref: '#/components/schemas/style-metadata'
       responses:
         '204':
-          description: |
+          description: |-
             style metadata updated
         '401':
-          description: |
+          description: |-
             unauthorized access
         '404':
-          description: |
+          description: |-
             style not found
     patch:
       tags:
         - Manage styles
-      summary: |
+      summary: |-
         update parts of the style metadata
-      description: |
+      description: |-
         Update selected elements of the style metadata for 
         the style with the id `styleId`.
         
@@ -577,7 +577,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/styleId'
       requestBody:
-        description: |
+        description: |-
           The members of the style metadata object that are updated.
         content:
           application/merge-patch+json:
@@ -585,19 +585,19 @@ paths:
               $ref: '#/components/schemas/style-metadata'
       responses:
         '204':
-          description: |
+          description: |-
             style metadata updated
         '400':
-          description: |
+          description: |-
             malformed patch document
         '401':
-          description: |
+          description: |-
             unauthorized access
         '404':
-          description: |
+          description: |-
             style not found
         '415':
-          description: |
+          description: |-
             unsupported patch document
           headers:
             Accept-Patch:
@@ -606,7 +606,7 @@ paths:
               schema:
                 type: string
         '422':
-          description: |
+          description: |-
             unprocessable request, the patch document appears 
             to be valid, but the server is incapable of processing 
             the request
@@ -614,10 +614,10 @@ paths:
     get:
       tags:
         - Fetch resources
-      summary: |
+      summary: |-
         information about the available resources (symbols, sprites)
       operationId: getResources
-      description: |
+      description: |-
         This operation fetches the set of resources that have been
         created and that may be used by reference in stylesheets. 
         Resources in this Style API are symbols and sprites.
@@ -638,19 +638,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/resource-set'
         '400':
-          description: |
+          description: |-
             invalid or unknown query parameters
         '406':
-          description: |
+          description: |-
             The media types accepted by the client are not 
             supported for this resource
   '/resources/{resourceId}':
     get:
       tags:
         - Fetch resources
-      summary: |
+      summary: |-
         fetch a symbol resource by id
-      description: |
+      description: |-
         Fetches the resource with identifier `resourceId`. The set of 
         available resources can be retrieved at `/resources`.
       operationId: getResource
@@ -658,7 +658,7 @@ paths:
         - $ref: '#/components/parameters/resourceId'
       responses:
         '200':
-          description: |
+          description: |-
             The symbol resource
           content:
             image/png:
@@ -671,18 +671,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/mb-sprite-index'
         '404':
-          description: |
+          description: |-
             resource not found
         '406':
-          description: |
+          description: |-
             The requested style encoding is not supported 
             for this style
     put:
       tags:
         - Manage resources
-      summary: |
+      summary: |-
         replace a symbol resource or add a new one
-      description: |
+      description: |-
         Replace an existing resource with the id `resourceId`. If no 
         such resource exists, a new resource with that id is added.
         
@@ -706,7 +706,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/resourceId'
       requestBody:
-        description: |
+        description: |-
           A single symbol or sprite resource.
         content:
           image/png:
@@ -720,17 +720,17 @@ paths:
               $ref: '#/components/schemas/mb-sprite-index'
       responses:
         '204':
-          description: |
+          description: |-
             symbol resource updated or created
         '401':
-          description: |
+          description: |-
             unauthorized access
     delete:
       tags:
         - Manage resources
-      summary: |
+      summary: |-
         delete a symbol resource
-      description: |
+      description: |-
         Delete an existing resource with the id `resourceId`. If no 
         such resource exists, an error is returned.
         
@@ -743,13 +743,13 @@ paths:
         - $ref: '#/components/parameters/resourceId'
       responses:
         '204':
-          description: |
+          description: |-
             symbol resource deleted
         '401':
-          description: |
+          description: |-
             unauthorized access
         '404':
-          description: |
+          description: |-
             resource not found
 components:
   securitySchemes:
@@ -760,7 +760,7 @@ components:
     f-html-json:
       name: f
       in: query
-      description: | 
+      description: |- 
         (informative) \
         The content type of the response. If no value is provided, 
         the standard http rules apply, i.e., the accept header 
@@ -777,7 +777,7 @@ components:
     f-json:
       name: f
       in: query
-      description: | 
+      description: |- 
         (informative) \
         The content type of the response. If no value is provided, 
         the standard http rules apply, i.e., the accept header 
@@ -793,7 +793,7 @@ components:
     f-style:
       name: f
       in: query
-      description: | 
+      description: |- 
         (informative) \
         The content type of the response. If no value is provided, 
         the standard http rules apply, i.e., the accept header 
@@ -811,7 +811,7 @@ components:
     validate:
       name: validate
       in: query
-      description: | 
+      description: |- 
         (part of conformance class 'style-validation') \
         'yes' creates a new style after successful validation
         and returns 400, if validation fails,
@@ -832,7 +832,7 @@ components:
     styleId:
       name: styleId
       in: path
-      description: |
+      description: |-
         Local identifier of a style. \
         A list of all available styles can be found 
         under the /styles path.
@@ -842,7 +842,7 @@ components:
     resourceId:
       name: resourceId
       in: path
-      description: |
+      description: |-
         Local identifier of a symbol resource. \
         A list of all available resource can be found 
         under the /resources path.
@@ -1013,7 +1013,7 @@ components:
         description:
           type: string
           nullable: true
-          example: |
+          example: |-
             This topographic basemap style is designed to be 
             used in situations with low ambient light. 
             
