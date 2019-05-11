@@ -500,10 +500,74 @@ paths:
         Update selected elements of the style metadata for 
         the style with the id `styleId`.
         
+        The PATCH semantics in this operation are defined by 
+        RFC 7396 (JSON Merge Patch). From the specification:
+        
+        _"A JSON merge patch document describes changes to be 
+        made to a target JSON document using a syntax that 
+        closely mimics the document being modified. Recipients
+        of a merge patch document determine the exact set of 
+        changes being requested by comparing the content of 
+        the provided patch against the current content of the 
+        target document. If the provided merge patch contains 
+        members that do not appear within the target, those 
+        members are added. If the target does contain the 
+        member, the value is replaced. Null values in the 
+        merge patch are given special meaning to indicate 
+        the removal of existing values in the target."_
+        
+        Some examples:
+        
+        To add or update the point of contact and the access
+        constraint, just send
+        
+        ```
+        {
+          "pointOfContact": "Jane Doe"
+          "accessConstraints": "restricted"
+        }
+        ```
+        
+        To remove the point of contact and the access 
+        constraint, send 
+
+        ```
+        {
+          "pointOfContact": null
+          "accessConstraints": null
+        }
+        ```
+        
+        For arrays the complete array needs to be sent.
+        To add a keyword to the example below, send
+
+        ```
+        {
+          "keywords": [ "basemap", "TDS", "TDS 6.1", "OGC API", "new keyword" ]
+        }
+        ```
+        
+        To remove the "TDS" keyword again, send
+        
+        ```
+        {
+          "keywords": [ "basemap", "TDS 6.1", "OGC API", "new keyword" ]
+        }
+        ```
+        
+        To remove all keywords, send
+        
+        ```
+        {
+          "keywords": null
+        }
+        ```
+        
+        The same applies to `stylesheets` and `layers`. To update 
+        these members, you have to send the complete new array value.
+
         This operation is only available to registered style 
         authors.
-        
-        TODO - Work on the details
       operationId: patchStyleMetadata
       security:
         - BasicAuth: []
@@ -511,21 +575,38 @@ paths:
         - $ref: '#/components/parameters/styleId'
       requestBody:
         description: |
-          TODO
+          The members of the style metadata object that are updated.
         content:
-          application/json:
+          application/merge-patch+json:
             schema:
-              $ref: '#/components/schemas/patch'
+              $ref: '#/components/schemas/style-metadata'
       responses:
         '204':
           description: |
             style metadata updated
+        '400':
+          description: |
+            malformed patch document
         '401':
           description: |
             unauthorized access
         '404':
           description: |
             style not found
+        '415':
+          description: |
+            unsupported patch document
+          headers:
+            Accept-Patch:
+              description: |-
+                supported patch document media types
+              schema:
+                type: string
+        '422':
+          description: |
+            unprocessable request, the patch document appears 
+            to be valid, but the server is incapable of processing 
+            the request
   '/resources':
     get:
       tags:
@@ -924,9 +1005,11 @@ components:
           example: night
         title:
           type: string
+          nullable: true
           example: Topographic night style
         description:
           type: string
+          nullable: true
           example: |
             This topographic basemap style is designed to be 
             used in situations with low ambient light. 
@@ -935,6 +1018,7 @@ components:
             specification.
         keywords:
           type: array
+          nullable: true
           items: 
             type: string
           example: 
@@ -944,9 +1028,11 @@ components:
             - OGC API
         pointOfContact:
           type: string
+          nullable: true
           example: John Doe
         accessConstraints:
           type: string
+          nullable: true
           example: unclassified
           enum:
             - unclassified
@@ -956,14 +1042,17 @@ components:
             - topSecret
         scope:
           type: string
+          nullable: true
           example: style
           enum:
             - style
         version:
           type: string
+          nullable: true
           example: 1.0.0
         stylesheets:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/stylesheet'
           example:
@@ -985,6 +1074,7 @@ components:
                 type: 'application/vnd.ogc.sld+xml;version=1.0'
         layers:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/style-layer'
           example:
@@ -1005,24 +1095,31 @@ components:
                   type: 'string'
     stylesheet:
       type: object
+      nullable: true
       required:
-        - title
+        - link
       properties:
         title:
           type: string
+          nullable: true
         version:
           type: string
+          nullable: true
         specification:
           type: string
           format: url
+          nullable: true
         native:
           type: boolean
+          nullable: true
         tilingScheme:
           type: string
+          nullable: true
         link:
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
     style-layer:
       type: object
+      nullable: true
       required:
         - id
       properties:
@@ -1031,8 +1128,10 @@ components:
           example: vegetationsrf
         description:
           type: string
+          nullable: true
         type:
           type: string
+          nullable: true
           example: polygon
           enum:
             - point
@@ -1044,7 +1143,3 @@ components:
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/queryables'
         sampleData:
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
-    patch:
-      type: object
-      description: |
-        TODO add details
