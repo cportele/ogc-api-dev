@@ -542,7 +542,7 @@ paths:
         ```
         
         For arrays the complete array needs to be sent.
-        To add a keyword to the example below, send
+        To add a keyword to the example style metadata object, send
 
         ```
         {
