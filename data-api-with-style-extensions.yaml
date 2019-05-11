@@ -6,9 +6,9 @@ servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-features-api/1.0.0
 info:
-  title: |
+  title: |-
     Open Portrayal Framework Features/Tiles API (DRAFT)
-  description: |
+  description: |-
     This is a draft of the OGC Testbed-15 Features/Tiles API extensions 
     to support styles in the Open Portrayal Framework task.
     
@@ -38,13 +38,13 @@ info:
     url: 'https://raw.githubusercontent.com/opengeospatial/WFS_FES/master/LICENSE'
 tags:
   - name: Capabilities
-    description: |
+    description: |-
       essential characteristics of this API
   - name: Features
-    description: |
+    description: |-
       access to data (features)
   - name: Tiles
-    description: |
+    description: |-
       access to data (features), partitioned into a hierarchy of tiles
 paths:
   '/':
@@ -52,7 +52,7 @@ paths:
       tags:
         - Capabilities
       summary: landing page
-      description: |
+      description: |-
         The landing page provides links to the API definition, the conformance
         statements and to the feature collections in this dataset.
       operationId: getLandingPage
@@ -66,7 +66,7 @@ paths:
   '/conformance':
     get:
       summary: information about specifications that this API conforms to
-      description: |
+      description: |-
         A list of all requirements classes specified in a standard that the 
         server conforms to.
       operationId: getConformanceDeclaration
@@ -103,7 +103,7 @@ paths:
         - $ref: '#/components/parameters/f-json-html'
       responses:
         '200':
-          description: |
+          description: |-
             Metadata about the collection including style information.
           content:
             application/json:
@@ -119,9 +119,9 @@ paths:
     patch:
       tags:
         - Capabilities
-      summary: |
+      summary: |-
         update parts of the style metadata
-      description: |
+      description: |-
         Update selected elements of the metadata for 
         the collection with the id `collectionId`.
         
@@ -181,7 +181,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/collectionId'
       requestBody:
-        description: |
+        description: |-
           The updated style information for the collection.
         content:
           application/merge-patch+json:
@@ -191,14 +191,14 @@ paths:
         '204':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/Updated'
         '400':
-          description: |
+          description: |-
             Malformed patch document.
         '401':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/UnauthorizedAccess'
         '404':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
         '415':
-          description: |
+          description: |-
             Unsupported patch document.
           headers:
             Accept-Patch:
@@ -207,7 +207,7 @@ paths:
               schema:
                 type: string
         '422':
-          description: |
+          description: |-
             Unprocessable request. The patch document appears 
             to be valid, but the server is incapable of processing 
             the request.
@@ -218,7 +218,7 @@ paths:
       tags:
         - Capabilities
       summary: fetch the queryable properties of the feature collection
-      description: |
+      description: |-
         This operation supports clients to construct expressions for 
         selection criteria in queries on features in the collection. 
         
@@ -275,7 +275,7 @@ paths:
         - $ref: '#/components/parameters/f-json-html'
       responses:
         '200':
-          description: |
+          description: |-
             The list of queryable properties for the features in the collection.
           content:
             application/json:
@@ -313,7 +313,7 @@ paths:
             type: string
       responses:
         '200':
-          description: |
+          description: |-
             Information about the feature collection plus the first features
             matching the selection parameters.
           content:
@@ -340,7 +340,7 @@ paths:
         - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
       responses:
         '200':
-          description: |
+          description: |-
             A feature.
           content:
             application/geo+json:
@@ -363,7 +363,7 @@ paths:
         - $ref: '#/components/parameters/f-json'
       responses:
         '200':
-          description: |
+          description: |-
             A list of tiling schemes.
           content:
             application/json:
@@ -401,7 +401,7 @@ paths:
         - $ref: '#/components/parameters/f-json'
       responses:
         '200':
-          description: |
+          description: |-
             A list of tiling schemes.
           content:
             application/json:
@@ -421,7 +421,7 @@ paths:
         - $ref: '#/components/parameters/f-json'
       responses:
         '200':
-          description: |
+          description: |-
             A tiling scheme used to partition the dataset into tiles.
           content:
             application/json:
@@ -436,7 +436,7 @@ paths:
       tags:
         - Tiles
       summary: retrieve a tile of the dataset
-      description: |
+      description: |-
         The tile in the requested tiling scheme, on the requested zoom level in
         the tiling scheme, with the requested grid coordinates (row, column) is
         returned. Each collection of the dataset is returned as a separate
@@ -453,7 +453,7 @@ paths:
         - $ref: '#/components/parameters/f-mvt'
       responses:
         '200':
-          description: |
+          description: |-
             A multi-layer tile of the dataset.
           content:
             application/vnd.mapbox-vector-tile:
@@ -467,7 +467,7 @@ paths:
     get:
       tags:
         - Tiles
-      summary: |
+      summary: |-
         fetch all tiling schemes available for the collection
       operationId: getTilingSchemesCollection
       parameters:
@@ -488,7 +488,7 @@ paths:
     get:
       tags:
         - Tiles
-      summary: |
+      summary: |-
         fetch a tiling scheme used to partition the collection into tiles
       operationId: getTilingSchemeCollection
       parameters:
@@ -497,7 +497,7 @@ paths:
         - $ref: '#/components/parameters/f-json'
       responses:
         '200':
-          description: |
+          description: |-
             A tiling scheme used to partition the collection into tiles.
           content:
             application/json:
@@ -512,7 +512,7 @@ paths:
       tags:
         - Tiles
       summary: fetch a tile of the collection
-      description: |
+      description: |-
         The tile in the requested tiling scheme, on the requested zoom level in
         the tiling scheme, with the requested grid coordinates (row, column) is
         returned. The tile has a single layer with all selected features in the
@@ -561,7 +561,7 @@ components:
             $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/style-set'
           defaultStyle:
             type: string
-            description: |
+            description: |-
               the style id of a recommended default style to use for this collection
             example: 'topographic'
     collectionInfo-patch:
@@ -572,7 +572,7 @@ components:
         defaultStyle:
           type: string
           nullable: true
-          description: |
+          description: |-
             the style id of a recommended default style to use for this collection
           example: 'topographic'
     collectionList:
@@ -615,7 +615,7 @@ components:
     f-json-html:
       name: f
       in: query
-      description: |
+      description: |-
         The format of the response. If no value is provided, the standard http
         rules apply, i.e., the accept header is used to determine the format.
 
@@ -633,7 +633,7 @@ components:
     f-mvt-json:
       name: f
       in: query
-      description: |
+      description: |-
         The format of the response. If no value is provided, the standard http
         rules apply, i.e., the accept header is used to determine the format.
         
@@ -652,7 +652,7 @@ components:
     f-json:
       name: f
       in: query
-      description: |
+      description: |-
         The format of the response. If no value is provided, the standard http
         rules apply, i.e., the accept header is used to determine the format.
         
@@ -669,7 +669,7 @@ components:
     f-mvt:
       name: f
       in: query
-      description: |
+      description: |-
         The format of the response. If no value is provided, the standard http
         rules apply, i.e., the accept header is used to determine the format.
         
@@ -686,7 +686,7 @@ components:
     collections:
       name: collections
       in: query
-      description: |
+      description: |-
         The collections that should be included in the tile. The parameter value
         is a list of collection identifiers.
       required: false
@@ -699,7 +699,7 @@ components:
     collectionId:
       name: collectionId
       in: path
-      description: |
+      description: |-
         local identifier of a collection
       required: true
       schema:
@@ -707,7 +707,7 @@ components:
     tilingSchemeId:
       name: tilingSchemeId
       in: path
-      description: |
+      description: |-
         Local identifier of a specific tiling scheme. A list of all available
         tilingSchemeIds can be found under the /tiles path or below. The default
         Tiling Scheme is the Google Maps Tiling Scheme.
