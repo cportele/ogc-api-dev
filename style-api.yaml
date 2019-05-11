@@ -550,7 +550,7 @@ paths:
         }
         ```
         
-        To remove the "TDS" keyword again, send
+        To remove the "TDS" keyword, send
         
         ```
         {
@@ -558,7 +558,7 @@ paths:
         }
         ```
         
-        To remove all keywords, send
+        To remove the keywords, send
         
         ```
         {
