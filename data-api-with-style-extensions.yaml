@@ -1,6 +1,7 @@
 openapi: 3.0.2
 # Revisions:
 # 2019-05-09 initial version
+# 2019-05-11 add PATCH semantics
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-features-api/1.0.0
@@ -25,6 +26,8 @@ info:
 
     For more background information see [the Vector Tiles Pilot Extension Engineering 
     Report](http://docs.opengeospatial.org/per/18-101.html#StylesAPI).
+
+    This document is also available in [GitHub](https://github.com/cportele/t15-opf/blob/master/data-api-with-style-extensions.yaml).
 
   version: "1.0.0"
   contact:
