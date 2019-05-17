@@ -1043,6 +1043,8 @@ components:
             - restricted
             - secret
             - topSecret
+        dates:
+          $ref: '#/components/schemas/dates'
         scope:
           type: string
           nullable: true
@@ -1096,6 +1098,36 @@ components:
               attributes:
                 - id: 'f_code'
                   type: 'string'
+    dates:
+      type: object
+      nullable: true
+      properties:
+        creation:
+          type: string
+          format: date-time
+          nullable: true
+        publication:
+          type: string
+          format: date-time
+          nullable: true
+        revision:
+          type: string
+          format: date-time
+          nullable: true
+        validTill:
+          type: string
+          format: date-time
+          nullable: true
+        receivedOn:
+          type: string
+          format: date-time
+          nullable: true
+      example:
+        creation: "2019-01-01T10:05:00Z"
+        publication: "2019-01-01T11:05:00Z"
+        revision: "2019-02-01T11:05:00Z"
+        validTill: "2019-02-01T11:05:00Z"
+        receivedOn: "2019-02-01T11:05:00Z"
     stylesheet:
       type: object
       nullable: true
