@@ -521,23 +521,29 @@ paths:
         
         Some examples:
         
-        To add or update the point of contact and the access
-        constraint, just send
+        To add or update the point of contact, the access
+        constraint and the revision date, just send
         
         ```
         {
           "pointOfContact": "Jane Doe"
           "accessConstraints": "restricted"
+          "dates": {
+            "revision": "2019-05-17T11:46:12Z"
+          }
         }
         ```
         
-        To remove the point of contact and the access 
-        constraint, send 
+        To remove the point of contact, the access 
+        constraint and the revision date, send 
 
         ```
         {
           "pointOfContact": null
           "accessConstraints": null
+          "dates": {
+            "revision": null
+          }
         }
         ```
         
