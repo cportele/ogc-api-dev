@@ -458,7 +458,7 @@ paths:
           content:
             application/vnd.mapbox-vector-tile:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/mvt'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/mapbox-vector-tile'
         '404':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
         '500':
