@@ -970,10 +970,31 @@ components:
         - resources
       type: object
       properties:
-        styles:
+        resources:
           type: array
           items:
             $ref: '#/components/schemas/resource-set-entry'
+          example:
+            - id: 'sprite.json'
+              link:
+                href: 'sprite.json'
+                type: 'application/json'
+                rel: '???'
+            - id: 'sprite.png'
+              link:
+                href: 'sprite.png'
+                type: 'image/png'
+                rel: '???'
+            - id: 'sprite.@2x.png'
+              link:
+                href: 'sprite.@2x.png'
+                type: 'image/png'
+                rel: '???'
+            - id: 'mosque.svg'
+              link:
+                href: 'mosque.svg'
+                type: 'image/svg+xml'
+                rel: '???'
     resource-set-entry:
       required:
         - id
@@ -983,27 +1004,6 @@ components:
           type: string
         link:
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
-      example:
-        - id: 'sprite.json'
-          link:
-            href: 'sprite.json'
-            type: 'application/json'
-            rel: '???'
-        - id: 'sprite.png'
-          link:
-            href: 'sprite.png'
-            type: 'image/png'
-            rel: '???'
-        - id: 'sprite.@2x.png'
-          link:
-            href: 'sprite.@2x.png'
-            type: 'image/png'
-            rel: '???'
-        - id: 'mosque.svg'
-          link:
-            href: 'mosque.svg'
-            type: 'image/svg+xml'
-            rel: '???'
     style-metadata:
       type: object
       required:
