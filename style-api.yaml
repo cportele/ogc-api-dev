@@ -365,6 +365,12 @@ paths:
         Replace an existing style with the id `styleId`. If no 
         such style exists, a new style with that id is added.
         
+        If the parameter `validate` is set to `yes`, the
+        style will be validated before adding/updating the 
+        style. If the parameter `validate` is set to 
+        `only`, the server will not be changed and only the
+        validation result will be returned.
+        
         For updated styles, the style metadata resource at 
         `/styles/{styleId}/metadata` is not updated. 
         For new styles a minimal style metadata resource is 
@@ -379,6 +385,7 @@ paths:
         - BasicAuth: []
       parameters:
         - $ref: '#/components/parameters/styleId'
+        - $ref: '#/components/parameters/validate'
       requestBody:
         description: |-
           A single style in one of the supported style encodings.
@@ -395,7 +402,10 @@ paths:
       responses:
         '204':
           description: |-
-            style updated or created
+            style updated, created or validated successfully
+        '400':
+          description: |-
+            invalid input, the style is invalid
         '401':
           description: |-
             unauthorized access
