@@ -8,6 +8,7 @@ openapi: 3.0.1
 # 2019-05-09 updates to align queryables and style-set with the
 #            Feature/Tile API extensions; use SwaggerHub domains
 # 2019-05-11 add PATCH semantics
+# 2019-06-07 add validate parameter on PUT /styles/{styleId}
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-style-api/1.0.0
@@ -15,6 +16,8 @@ info:
   title: |-
     Open Portrayal Framework Style API (DRAFT)
   description: |-
+    # Overview
+    
     This is a draft of the OGC Testbed-15 Style API in the Open 
     Portrayal Framework task. The Style API is a Web API for 
     fetching and managing styles. 
@@ -64,6 +67,25 @@ info:
     reference fonts / glyphs from a stylesheet, please reference
     an existing font library.
     
+    Currently no media types have been registered for Mapbox 
+    Styles or OGC SLD. Temporary media types in the vnd-branch
+    are used for now.
+
+    For more background information see [the Vector Tiles Pilot Extension 
+    Engineering Report](http://docs.opengeospatial.org/per/18-101.html#StylesAPI).
+
+    The API is consistent with the emerging OGC API family of 
+    standards and could be a starting point for a future 
+    "OGC API - Styles" standard. API components that are used
+    by more than one of the draft API specifications are not
+    defined in this document, but are defined in a 
+    [domain for OGC API building blocks on Swaggerhub](https://app.swaggerhub.com/domains/cportele/ogc-api/1.0.0) 
+    and are referenced.
+
+    This document is also available in [GitHub](https://github.com/cportele/t15-opf/blob/master/style-api.yaml).
+    
+    # Conformance classes
+    
     The Style API specifies the following conformance classes.
     
     * **'core'** supports the basic GET operations on `/`, `/conformance`, `/styles`, `/styles/{styleId}`, and `/styles/{styleId}/metadata`
@@ -77,18 +99,32 @@ info:
     * **'sld-10'** supports SLD 1.0 as a style encoding on `/styles` and `/styles/{styleId}`
     * **'sld-11'** supports SLD 1.1 as a style encoding on `/styles` and `/styles/{styleId}`
     
-    The API is consistent with the emerging OGC API family of 
-    standards and could be a starting point for a future 
-    "OGC API - Styles" standard.
+    # Examples how clients are expected to interact with the API
     
-    Currently no media types have been registered for Mapbox 
-    Styles or OGC SLD. Temporary media types in the vnd-branch
-    are used for now.
+    **TODO: use working URIs once Testbed-15 implementations are 
+    available.**
     
-    For more background information see [the Vector Tiles Pilot Extension 
-    Engineering Report](http://docs.opengeospatial.org/per/18-101.html#StylesAPI).
-
-    This document is also available in [GitHub](https://github.com/cportele/t15-opf/blob/master/style-api.yaml).
+    Let's assume that a dataset with topographic data is avaiable 
+    via an API that implements the OGC API Features and Tiles 
+    specifications at `https://example.com/data/` (landing page
+    for the data access API). 
+    See [Here](https://app.swaggerhub.com/apis/cportele/opf-features-api/1.0.0)
+    is a template of the definition of that API.
+    
+    Roads are included in the data in the collection `transportationgroundcrv`.
+    Roads are the features with a property `f_code` with a value of `AP030`.
+    
+    ## A visual style editor creating a new style
+    
+    **TODO**
+    
+    ## A visual style editor updating an existing style
+    
+    **TODO**
+    
+    ## A map client
+    
+    **TODO**
 
   version: "1.0.0"
   contact:
@@ -711,8 +747,8 @@ paths:
         high-resolution displays (the file ends in '.@2x.png').
         
         The resource will only by available in the native format in 
-        which the resource is posted. There is support for automated
-        conversions to other representations.
+        which the resource is posted. There is no support for
+        automated conversions to other representations.
 
         This operation is only available to registered style 
         authors.
