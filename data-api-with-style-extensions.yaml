@@ -108,7 +108,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/collectionInfo'
+                $ref: '#/components/schemas/collection'
             text/html:
               schema:
                 type: string
@@ -186,7 +186,7 @@ paths:
         content:
           application/merge-patch+json:
             schema:
-              $ref: '#/components/schemas/collectionInfo-patch'
+              $ref: '#/components/schemas/collection-patch'
       responses:
         '204':
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/Updated'
@@ -552,9 +552,9 @@ paths:
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
 components:
   schemas:
-    collectionInfo:
+    collection:
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/collectionInfo'      
+      - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/collection'      
       - type: object
         properties:
           styles:
@@ -564,7 +564,7 @@ components:
             description: |-
               the style id of a recommended default style to use for this collection
             example: 'topographic'
-    collectionInfo-patch:
+    collection-patch:
       type: object
       properties:
         styles:
