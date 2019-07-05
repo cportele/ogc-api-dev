@@ -9,6 +9,7 @@ openapi: 3.0.1
 #            Feature/Tile API extensions; use SwaggerHub domains
 # 2019-05-11 add PATCH semantics
 # 2019-06-07 add validate parameter on PUT /styles/{styleId}
+# 2019-07-05 add descriptions how clients interact with the APIs
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-style-api/1.0.0
@@ -101,30 +102,150 @@ info:
     
     # Examples how clients are expected to interact with the API
     
-    **TODO: use working URIs once Testbed-15 implementations are 
-    available.**
+    A dataset with topographic data according to the TDS specification 
+    is avaiable via an API that implements the OGC API Features and Tiles specification 
+    ([landing page of the dataset](`https://services.interactive-instruments.de/t15/daraa`)).
+    The dataset covers the region of Daraa, Syria. The URI of the landing page is used as 
+    `{data}` in the descriptions below.
     
-    Let's assume that a dataset with topographic data is avaiable 
-    via an API that implements the OGC API Features and Tiles 
-    specifications at `https://example.com/data/` (landing page
-    for the data access API). 
-    See [Here](https://app.swaggerhub.com/apis/cportele/opf-features-api/1.0.0)
-    is a template of the definition of that API.
+    In addition, a style repository is avaiable via an API that implements the Styles API 
+    specified in Testbed-15 
+    ([landing page of the repository](`https://services.interactive-instruments.de/t15/daraa`)).
+    The URI of the landing page is used as `{styles}` in the descriptions below.
     
-    Roads are included in the data in the collection `transportationgroundcrv`.
-    Roads are the features with a property `f_code` with a value of `AP030`.
+    
+    NOTE: The referenced API does not yet implement the specifications
+    drafted in Testbed-15. This is work in progress. A template 
+    for the updated specification of the Feature API is available
+    [here](https://app.swaggerhub.com/apis/cportele/opf-features-api/1.0.0). 
+    **TODO: update URIs once Testbed-15 implementations are available.**
+    
+    Roads are included in the data in the collection `transportationgroundcrv`
+    as [features with a property `f_code` with a value of `AP030`](https://services.interactive-instruments.de/t15/daraa/collections/transportationgroundcrv/items?f_code=AP030).
     
     ## A visual style editor creating a new style
     
-    **TODO**
+    A user wants to create a new style for TDS roads using her visual style editor. 
+    She knows the Daraa dataset and the data access API.
+    
+    After creating a new style, selecting the native stylesheet language for the style  
+    and identifying the `transportationgroundcrv` collection
+    in the Daraa dataset as a sample data source, the visual style editor executes a request
+    to `{data}/conformance` of the data access API to determine the API capabilities. Note that
+    alternatively also the API definition may be inspected, but for a client that
+    supports the OGC API standards in general, using the conformance declaration is simpler 
+    and, therefore, used in this example.
+    
+    If the editor supports both styling of GeoJSON features or Mapbox Vector Tile data,
+    the editor requires support for at least one of the two following sets of requirements 
+    classes:
+    
+    * `http://www.opengis.net/spec/ogcapi-features-1/1.0/req/core` and `http://www.opengis.net/spec/ogcapi-features-1/1.0/req/geojson` 
+    or 
+    * `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/req/core` and `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/req/mvt`.
+    
+    The first one provides access to GeoJSON features via `{data}/collections/transportationgroundcrv/items`,
+    the second one provides access to MVT tiles via `{data}/collections/transportationgroundcrv/tiles`.
+    
+    NOTE: For requirements classes that have not yet been specified hypothetical URIs with "t15" 
+    instead of "spec" are used.
+    
+    In addition, the visual style editor will look for the following requirements classes:
+    
+    * `http://www.opengis.net/t15/ogcapi-features-n/1.0/req/queryables`: If this requirements 
+    class is supported, the visual style editor can specify styling rules that make use of
+    feature properties. Otherwise all styling rules will apply to all features in each 
+    collection.
+    * `http://www.opengis.net/t15/ogcapi-features-m/1.0/req/style-links`: If this requirements 
+    class is supported, the visual style editor will be able to create a link from the collection 
+    to the newly created style.
+    
+    The editor will also request information about the features in the collection via a 
+    request to `{data}/collections/transportationgroundcrv`.
+    
+    If `http://www.opengis.net/t15/ogcapi-features-n/1.0/req/queryables` is supported 
+    the queryables are retrieved via a request to `{data}/collections/transportationgroundcrv/queryables`.
+    
+    Based on this information, the visual style editor is able to configure its user interface
+    and guide the user through the creation of the style for road features and visualize 
+    the draft style using the Daraa data. Once she has finished the style, the style will be
+    published on a Style repository that supports the Style API.
+    
+    If the user request the use of a Style repository that the editor interacts with for the 
+    first time, the editor will again inspect the capabilities of the repository by fetching 
+    the conformance declaration at `{styles}/conformance`. 
+    
+    At least the following requirements classes must be supported in order for sharing 
+    the new style via the repository.
+    
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/core`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/json`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/manage-styles`
+    
+    In addition, if the style includes symbols or sprites, the repository also has to 
+    support the following requirements classes:
+    
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/resources`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/manage-resources`
+    
+    Finally, the repository has to support the native stylesheet language that the user 
+    has selected for the style definition, i.e. one of:
+    
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/mapbox-styles`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/sld-10`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/sld-11`
+    
+    The visual style editor will ask the user for her credentials (username and password)
+    in the style repository and use the credentials in any of the following POST/PUT/PATCH 
+    requests.  
+    
+    If `http://www.opengis.net/t15/opf-styles-1/1.0/req/style-validation` is supported,
+    the visual style editor can also offer validation of the draft style any time during the 
+    drafting process using POST requests with the draft stylesheet to `{styles}/styles?validate=only`.
+    
+    To create the new style either a POST request with the stylesheet to `{styles}/styles`
+    or a PUT request to `{styles}/styles/{stylename}` (where `{stylename}` is the name of 
+    the style specified by the user) is sent. `?validate=true` may be added to the request 
+    URI to trigger validation in this step, too, if the style validation requirements class 
+    is supported. If PUT is used, the visual style editor should check that no existing 
+    style `{stylename}` exists.
+    
+    After a succesful creation of the style (in case of a POST request, the URI of the 
+    new style `{styles}/styles/{stylename}` is returned in a HTTP header `Location`), 
+    the visual style editor will update the style metadata using a PUT or PATCH request to 
+    `{styles}/styles/{stylename}/metadata`. 
+    
+    If the data access API supports the requirements class 
+    `http://www.opengis.net/t15/ogcapi-features-m/1.0/req/style-links`, the visual style editor 
+    will add a link to the new style using a PATCH request to `{data}/collections/transportationgroundcrv`.
     
     ## A visual style editor updating an existing style
     
-    **TODO**
+    The process is quite similar to the previous example with the following changes:
+    
+    * The user will start from an existing style, not with a new style. I.e., the user 
+    will open/load the style from the style repository and the editor will fetch it 
+    from `{styles}/styles/{stylename}` (using the stylesheet language of choice) 
+    and its metadata from `{styles}/styles/{stylename}/metadata`.
+    * If the style metadata includes links to sample data 
+    (e.g., `{data}/collections/transportationgroundcrv`), the editor may use that data for 
+    sample visualizations and perhaps to determine changes to queryables. 
+    The user may also select other data sources for these purposes.
+    * Since an existing style is updated, the style definition will always be updated with 
+    a PUT request to `{styles}/styles/{stylename}` (no POST request to `{styles}/styles`, which
+    would create a new style).
     
     ## A map client
     
-    **TODO**
+    A map client that wants to visualize data for features or vector tiles for the collection
+    `{data}/collections/transportationgroundcrv` will look for a `styles` member in the 
+    response. It will probably select one of the styles from the list taking the media types
+    of the supported stylesheets into account and provide a capability so that users 
+    can change the style. The stylesheet returned based on the `href` member of the link 
+    will be used to render the data.
+
+ 
+    
 
   version: "1.0.0"
   contact:
