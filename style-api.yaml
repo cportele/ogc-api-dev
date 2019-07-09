@@ -137,33 +137,33 @@ info:
     and, therefore, used in this example.
     
     If the editor supports both styling of GeoJSON features or Mapbox Vector Tile data,
-    the editor requires support for at least one of the two following sets of requirements 
+    the editor requires support for at least one of the two following sets of conformance 
     classes:
     
-    * `http://www.opengis.net/spec/ogcapi-features-1/1.0/req/core` and `http://www.opengis.net/spec/ogcapi-features-1/1.0/req/geojson` 
+    * `http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core` and `http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson` 
     or 
-    * `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/req/core` and `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/req/mvt`.
+    * `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/conf/core` and `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/conf/mvt`.
     
     The first one provides access to GeoJSON features via `{data}/collections/transportationgroundcrv/items`,
     the second one provides access to MVT tiles via `{data}/collections/transportationgroundcrv/tiles`.
     
-    NOTE: For requirements classes that have not yet been specified hypothetical URIs with "t15" 
+    NOTE: For conformance classes that have not yet been specified hypothetical URIs with "t15" 
     instead of "spec" are used.
     
-    In addition, the visual style editor will look for the following requirements classes:
+    In addition, the visual style editor will look for the following conformance classes:
     
-    * `http://www.opengis.net/t15/ogcapi-features-n/1.0/req/queryables`: If this requirements 
+    * `http://www.opengis.net/t15/ogcapi-features-n/1.0/conf/queryables`: If this conformance 
     class is supported, the visual style editor can specify styling rules that make use of
     feature properties. Otherwise all styling rules will apply to all features in each 
     collection.
-    * `http://www.opengis.net/t15/ogcapi-features-m/1.0/req/style-links`: If this requirements 
+    * `http://www.opengis.net/t15/ogcapi-features-m/1.0/conf/style-links`: If this conformance 
     class is supported, the visual style editor will be able to create a link from the collection 
     to the newly created style.
     
     The editor will also request information about the features in the collection via a 
     request to `{data}/collections/transportationgroundcrv`.
     
-    If `http://www.opengis.net/t15/ogcapi-features-n/1.0/req/queryables` is supported 
+    If `http://www.opengis.net/t15/ogcapi-features-n/1.0/conf/queryables` is supported 
     the queryables are retrieved via a request to `{data}/collections/transportationgroundcrv/queryables`.
     
     Based on this information, the visual style editor is able to configure its user interface
@@ -175,38 +175,38 @@ info:
     first time, the editor will again inspect the capabilities of the repository by fetching 
     the conformance declaration at `{styles}/conformance`. 
     
-    At least the following requirements classes must be supported in order for sharing 
+    At least the following conformance classes must be supported in order for sharing 
     the new style via the repository.
     
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/core`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/json`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/manage-styles`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/core`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/json`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-styles`
     
     In addition, if the style includes symbols or sprites, the repository also has to 
-    support the following requirements classes:
+    support the following conformance classes:
     
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/resources`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/manage-resources`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/resources`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-resources`
     
     Finally, the repository has to support the native stylesheet language that the user 
     has selected for the style definition, i.e. one of:
     
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/mapbox-styles`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/sld-10`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/req/sld-11`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/mapbox-styles`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-10`
+    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-11`
     
     The visual style editor will ask the user for her credentials (username and password)
     in the style repository and use the credentials in any of the following POST/PUT/PATCH 
     requests.  
     
-    If `http://www.opengis.net/t15/opf-styles-1/1.0/req/style-validation` is supported,
+    If `http://www.opengis.net/t15/opf-styles-1/1.0/conf/style-validation` is supported,
     the visual style editor can also offer validation of the draft style any time during the 
     drafting process using POST requests with the draft stylesheet to `{styles}/styles?validate=only`.
     
     To create the new style either a POST request with the stylesheet to `{styles}/styles`
     or a PUT request to `{styles}/styles/{stylename}` (where `{stylename}` is the name of 
     the style specified by the user) is sent. `?validate=true` may be added to the request 
-    URI to trigger validation in this step, too, if the style validation requirements class 
+    URI to trigger validation in this step, too, if the style validation conformance class 
     is supported. If PUT is used, the visual style editor should check that no existing 
     style `{stylename}` exists.
     
@@ -215,8 +215,8 @@ info:
     the visual style editor will update the style metadata using a PUT or PATCH request to 
     `{styles}/styles/{stylename}/metadata`. 
     
-    If the data access API supports the requirements class 
-    `http://www.opengis.net/t15/ogcapi-features-m/1.0/req/style-links`, the visual style editor 
+    If the data access API supports the conformance class 
+    `http://www.opengis.net/t15/ogcapi-features-m/1.0/conf/style-links`, the visual style editor 
     will add a link to the new style using a PATCH request to `{data}/collections/transportationgroundcrv`.
     
     ## A visual style editor updating an existing style
@@ -331,34 +331,34 @@ paths:
       tags:
         - Capabilities
       summary: |-
-        information about requirements classes that this API 
+        information about conformance classes that this API 
         conforms to
       description: |-
-        List of all requirements classes specified in a specification 
+        List of all conformance classes specified in a specification 
         that the server conforms to.
-      operationId: getRequirementsClasses
+      operationId: getConformanceClasses
       parameters:
         - $ref: '#/components/parameters/f-json'
       responses:
         '200':
           description: |-
-            the URIs of all requirements classes supported by 
+            the URIs of all conformance classes supported by 
             this API
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/req-classes'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/conf-classes'
               example:
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/core'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/html'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/json'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/manage-styles'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/style-validation'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/resources'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/manage-resources'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/mapbox-styles'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/sld-10'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/req/sld-11'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/core'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/html'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/json'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-styles'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/style-validation'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/resources'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-resources'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/mapbox-styles'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-10'
+                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-11'
 
         '400':
           description: |-
