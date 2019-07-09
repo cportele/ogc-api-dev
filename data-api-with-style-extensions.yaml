@@ -67,7 +67,7 @@ paths:
     get:
       summary: information about specifications that this API conforms to
       description: |-
-        A list of all requirements classes specified in a standard that the 
+        A list of all conformance classes specified in a standard that the 
         server conforms to.
       operationId: getConformanceDeclaration
       parameters:
