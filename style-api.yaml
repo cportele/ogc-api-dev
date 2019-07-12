@@ -10,6 +10,7 @@ openapi: 3.0.1
 # 2019-05-11 add PATCH semantics
 # 2019-06-07 add validate parameter on PUT /styles/{styleId}
 # 2019-07-05 add descriptions how clients interact with the APIs
+# 2019-07-12 change /styles response from an array to an object
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-style-api/1.0.0
