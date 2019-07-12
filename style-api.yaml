@@ -1275,6 +1275,12 @@ components:
                   type: 'string'
         links:
           type: array
+          description: |-
+            The links may reference related resources. It is recommended to include
+            a link to a thumbnail with link relation `preview` (specified by RFC 6903)
+            and the appropriate media type in the `type` parameter.
+            The thumbnail may be an image that is published as a resource in the API,
+            it may reference an appropriate raster tile, a map request, etc. 
           nullable: true
           items:
             $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
