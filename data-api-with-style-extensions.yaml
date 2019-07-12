@@ -347,7 +347,7 @@ components:
       - type: object
         properties:
           styles:
-            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/style-set'
+            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0#/components/schemas/style-set'
           defaultStyle:
             type: string
             description: |-
