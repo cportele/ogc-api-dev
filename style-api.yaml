@@ -80,9 +80,10 @@ info:
     standards and could be a starting point for a future 
     "OGC API - Styles" standard. API components that are used
     by more than one of the draft API specifications are not
-    defined in this document, but are defined in a 
-    [domain for OGC API building blocks on Swaggerhub](https://app.swaggerhub.com/domains/cportele/ogc-api/1.0.0) 
-    and are referenced.
+    defined in this document, but are defined in two domains on Swaggerhub 
+    ([OGC API - Features - Part 1: Core building blocks](https://app.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2) 
+    and [draft building blocks](https://app.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0)). 
+    These are included by reference.
 
     This document is also available in [GitHub](https://github.com/cportele/t15-opf/blob/master/style-api.yaml).
     
@@ -291,7 +292,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/landing-page'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/landingPage'
               example:
                 - href: 'https://example.org/catalog/1.0/?f=json'
                   rel: self
@@ -348,7 +349,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/conf-classes'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/confClasses'
               example:
                 - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/core'
                 - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/html'
@@ -1171,7 +1172,7 @@ components:
         id:
           type: string
         link:
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
     style-metadata:
       type: object
       required:
@@ -1276,7 +1277,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
+            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
           example:
             - href: 'https://example.org/catalog/1.0/resources/night-thumbnail.png'
               rel: preview
@@ -1335,7 +1336,7 @@ components:
           type: string
           nullable: true
         link:
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
     style-layer:
       type: object
       nullable: true
@@ -1359,9 +1360,9 @@ components:
             - geometry
             - raster
         attributes:
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/queryables'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0#/components/schemas/queryables'
         sampleData:
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
     style-set:
       type: object
       required:
@@ -1415,4 +1416,4 @@ components:
           nullable: true
           minItems: 1
           items:
-            $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
+            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
