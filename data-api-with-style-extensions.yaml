@@ -2,14 +2,15 @@ openapi: 3.0.1
 # Revisions:
 # 2019-05-09 initial version
 # 2019-05-11 add PATCH semantics
+# 2019-07-12 update OGC API Features to 1.0.0-draft.2 and removed the tile resource
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-features-api/1.0.0
 info:
   title: |-
-    Open Portrayal Framework Features/Tiles API (DRAFT)
+    Open Portrayal Framework Features API (DRAFT)
   description: |-
-    This is a draft of the OGC Testbed-15 Features/Tiles API extensions 
+    This is a draft of the OGC Testbed-15 Features API extensions 
     to support styles in the Open Portrayal Framework task.
     
     The extensions are the following.
@@ -43,9 +44,6 @@ tags:
   - name: Features
     description: |-
       access to data (features)
-  - name: Tiles
-    description: |-
-      access to data (features), partitioned into a hierarchy of tiles
 paths:
   '/':
     get:
@@ -57,12 +55,12 @@ paths:
         statements and to the feature collections in this dataset.
       operationId: getLandingPage
       parameters:
-        - $ref: '#/components/parameters/f-json-html'
+        - $ref: '#/components/parameters/f'
       responses:
         '200':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/LandingPage'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/LandingPage'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
   '/conformance':
     get:
       summary: information about specifications that this API conforms to
@@ -71,14 +69,14 @@ paths:
         server conforms to.
       operationId: getConformanceDeclaration
       parameters:
-        - $ref: '#/components/parameters/f-json'
+        - $ref: '#/components/parameters/f'
       tags:
         - Capabilities
       responses:
         '200':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ConformanceDeclaration'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ConformanceDeclaration'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
   '/collections':
     get:
       tags:
@@ -86,12 +84,12 @@ paths:
       summary: the feature collections in the dataset
       operationId: getCollections
       parameters:
-        - $ref: '#/components/parameters/f-json-html'
+        - $ref: '#/components/parameters/f'
       responses:
         '200':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/Collections'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/Collections'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
   '/collections/{collectionId}':
     get:
       tags:
@@ -100,11 +98,11 @@ paths:
       operationId: describeCollection
       parameters:
         - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/f-json-html'
+        - $ref: '#/components/parameters/f'
       responses:
         '200':
           description: |-
-            Metadata about the collection including style information.
+            Information about the collection including style information.
           content:
             application/json:
               schema:
@@ -113,9 +111,9 @@ paths:
               schema:
                 type: string
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
     patch:
       tags:
         - Capabilities
@@ -189,14 +187,14 @@ paths:
               $ref: '#/components/schemas/collection-patch'
       responses:
         '204':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/Updated'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/Updated'
         '400':
           description: |-
             Malformed patch document.
         '401':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/UnauthorizedAccess'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/UnauthorizedAccess'
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
         '415':
           description: |-
             Unsupported patch document.
@@ -212,7 +210,7 @@ paths:
             to be valid, but the server is incapable of processing 
             the request.
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
   '/collections/{collectionId}/queryables':
     get:
       tags:
@@ -272,7 +270,7 @@ paths:
       operationId: getQueryables
       parameters:
         - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/f-json-html'
+        - $ref: '#/components/parameters/f'
       responses:
         '200':
           description: |-
@@ -280,14 +278,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/queryables'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/queryables'
             text/html:
               schema:
                 type: string
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
   '/collections/{collectionId}/items':
     get:
       tags:
@@ -296,13 +294,10 @@ paths:
       operationId: getFeatures
       parameters:
         - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/f-json-html'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/limit'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/offset'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/bbox'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/datetime'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/resultType'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
+        - $ref: '#/components/parameters/f'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/limit'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/bbox'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/datetime'
         - name: f_code
           in: query
           description: Filter the collection by f_code
@@ -313,20 +308,11 @@ paths:
             type: string
       responses:
         '200':
-          description: |-
-            Information about the feature collection plus the first features
-            matching the selection parameters.
-          content:
-            application/geo+json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/featureCollectionGeoJSON'
-            text/html:
-              schema:
-                type: string
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/Features'
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
   '/collections/{collectionId}/items/{featureId}':
     get:
       tags:
@@ -335,9 +321,9 @@ paths:
       operationId: getFeature
       parameters:
         - $ref: '#/components/parameters/collectionId'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/featureId'
-        - $ref: '#/components/parameters/f-json-html'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/featureId'
+        - $ref: '#/components/parameters/f'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/properties'
       responses:
         '200':
           description: |-
@@ -345,220 +331,23 @@ paths:
           content:
             application/geo+json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/featureGeoJSON'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/featureGeoJSON'
             text/html:
               schema:
                 type: string
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/tilingSchemes':
-    get:
-      tags:
-        - Tiles
-      summary: fetch all available tiling schemes
-      operationId: getTilingSchemes
-      parameters:
-        - $ref: '#/components/parameters/f-json'
-      responses:
-        '200':
-          description: |-
-            A list of tiling schemes.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingSchemes'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/tilingSchemes/{tilingSchemeId}':
-    get:
-      tags:
-        - Tiles
-      summary: fetch a tiling scheme by id
-      operationId: getTilingScheme
-      parameters:
-        - $ref: '#/components/parameters/tilingSchemeId'
-        - $ref: '#/components/parameters/f-json'
-      responses:
-        '200':
-          description: A tiling scheme.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingScheme'
-        '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/tiles':
-    get:
-      tags:
-        - Tiles
-      summary: fetch all available tiling schemes
-      operationId: getTilingSchemesAlt
-      parameters:
-        - $ref: '#/components/parameters/f-json'
-      responses:
-        '200':
-          description: |-
-            A list of tiling schemes.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingSchemes'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/tiles/{tilingSchemeId}':
-    description: something
-    get:
-      tags:
-        - Tiles
-      summary: fetch a tiling scheme used to partition the dataset into tiles
-      operationId: getTilingSchemeAlt
-      parameters:
-        - $ref: '#/components/parameters/tilingSchemeId'
-        - $ref: '#/components/parameters/f-json'
-      responses:
-        '200':
-          description: |-
-            A tiling scheme used to partition the dataset into tiles.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingScheme'
-        '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/tiles/{tilingSchemeId}/{level}/{row}/{col}':
-    get:
-      tags:
-        - Tiles
-      summary: retrieve a tile of the dataset
-      description: |-
-        The tile in the requested tiling scheme, on the requested zoom level in
-        the tiling scheme, with the requested grid coordinates (row, column) is
-        returned. Each collection of the dataset is returned as a separate
-        layer. The collections and the feature properties to include in the tile
-        representation can be limited using query parameters.
-      operationId: getTileDataset
-      parameters:
-        - $ref: '#/components/parameters/tilingSchemeId'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/level'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/row'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/col'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/collections'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
-        - $ref: '#/components/parameters/f-mvt'
-      responses:
-        '200':
-          description: |-
-            A multi-layer tile of the dataset.
-          content:
-            application/vnd.mapbox-vector-tile:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/mapbox-vector-tile'
-        '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/collections/{collectionId}/tiles':
-    get:
-      tags:
-        - Tiles
-      summary: |-
-        fetch all tiling schemes available for the collection
-      operationId: getTilingSchemesCollection
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/f-json'
-      responses:
-        '200':
-          description: A list of tiling schemes available for the collection.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingSchemes'
-        '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/collections/{collectionId}/tiles/{tilingSchemeId}':
-    get:
-      tags:
-        - Tiles
-      summary: |-
-        fetch a tiling scheme used to partition the collection into tiles
-      operationId: getTilingSchemeCollection
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/tilingSchemeId'
-        - $ref: '#/components/parameters/f-json'
-      responses:
-        '200':
-          description: |-
-            A tiling scheme used to partition the collection into tiles.
-          content:
-            application/json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/tilingScheme'
-        '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
-  '/collections/{collectionId}/tiles/{tilingSchemeId}/{level}/{row}/{col}':
-    get:
-      tags:
-        - Tiles
-      summary: fetch a tile of the collection
-      description: |-
-        The tile in the requested tiling scheme, on the requested zoom level in
-        the tiling scheme, with the requested grid coordinates (row, column) is
-        returned. The tile has a single layer with all selected features in the
-        bounding box of the tile. The feature properties to include in the tile
-        representation can be limited using a query parameter.
-      operationId: getTileCollection
-      parameters:
-        - $ref: '#/components/parameters/collectionId'
-        - $ref: '#/components/parameters/tilingSchemeId'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/level'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/row'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/col'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/properties'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/parameters/datetime'
-        - $ref: '#/components/parameters/f-mvt-json'
-        - name: f_code
-          in: query
-          description: Filter the collection by f_code
-          required: false
-          style: form
-          explode: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A tile of the collection.
-          content:
-            application/geo+json:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/featureCollectionGeoJSON'
-            application/vnd.mapbox-vector-tile:
-              schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/mvt'
-        '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/NotFound'
-        '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
 components:
   schemas:
     collection:
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/collection'      
+      - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/collection'      
       - type: object
         properties:
           styles:
-            $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/style-set'
+            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/style-set'
           defaultStyle:
             type: string
             description: |-
@@ -568,7 +357,7 @@ components:
       type: object
       properties:
         styles:
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/style-set'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/style-set'
         defaultStyle:
           type: string
           nullable: true
@@ -612,7 +401,7 @@ components:
         - utilityinfrastructurepnt
         - vegetationsrf
   parameters:
-    f-json-html:
+    f:
       name: f
       in: query
       description: |-
@@ -630,72 +419,6 @@ components:
           - json
           - html
       example: json
-    f-mvt-json:
-      name: f
-      in: query
-      description: |-
-        The format of the response. If no value is provided, the standard http
-        rules apply, i.e., the accept header is used to determine the format.
-        
-        Pre-defined values are "mvt" for a Mapbox Vector Tile and "json" for a
-        GeoJSON feature collection. The response to other values is determined 
-        by the server.
-      required: false
-      style: form
-      explode: false
-      schema:
-        type: string
-        enum:
-          - json
-          - mvt
-      example: json
-    f-json:
-      name: f
-      in: query
-      description: |-
-        The format of the response. If no value is provided, the standard http
-        rules apply, i.e., the accept header is used to determine the format.
-        
-        The only pre-defined value is "json". The response to other values is 
-        determined by the server.
-      required: false
-      style: form
-      explode: false
-      schema:
-        type: string
-        enum:
-          - json
-      example: json
-    f-mvt:
-      name: f
-      in: query
-      description: |-
-        The format of the response. If no value is provided, the standard http
-        rules apply, i.e., the accept header is used to determine the format.
-        
-        The only pre-defined value is "mvt" to return a Mapbox Vector Tile. 
-        The response to other values is determined by the server.
-      required: false
-      style: form
-      explode: false
-      schema:
-        type: string
-        enum:
-          - mvt
-      example: mvt
-    collections:
-      name: collections
-      in: query
-      description: |-
-        The collections that should be included in the tile. The parameter value
-        is a list of collection identifiers.
-      required: false
-      style: form
-      explode: false
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/collectionList'
     collectionId:
       name: collectionId
       in: path
@@ -704,16 +427,3 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/collectionList'
-    tilingSchemeId:
-      name: tilingSchemeId
-      in: path
-      description: |-
-        Local identifier of a specific tiling scheme. A list of all available
-        tilingSchemeIds can be found under the /tiles path or below. The default
-        Tiling Scheme is the Google Maps Tiling Scheme.
-      required: true
-      schema:
-        type: string
-        enum:
-          - default
-      example: default
