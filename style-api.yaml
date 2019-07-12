@@ -1271,6 +1271,16 @@ components:
               attributes:
                 - id: 'f_code'
                   type: 'string'
+        links:
+          type: array
+          nullable: true
+          items:
+            $ref: 'https://api.swaggerhub.com/domains/cportele/ogc-api/1.0.0#/components/schemas/link'
+          example:
+            - href: 'https://example.org/catalog/1.0/resources/night-thumbnail.png'
+              rel: preview
+              type: image/png
+              title: thumbnail of the night style applied to OSM data from Daraa, Syria
     dates:
       type: object
       nullable: true
