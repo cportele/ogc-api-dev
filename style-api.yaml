@@ -394,7 +394,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/style-set'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0#/components/schemas/style-set'
         '400':
           description: |-
             invalid or unknown query parameters
@@ -1363,57 +1363,3 @@ components:
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0#/components/schemas/queryables'
         sampleData:
           $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
-    style-set:
-      type: object
-      required:
-        - styles
-      properties:
-        styles:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/style-set-entry'
-          example:
-            - id: 'night'
-              title: 'Topographic night style'
-              links:
-              - href: 'https://example.com/api/1.0/styles/night?f=mapbox'
-                type: 'application/vnd.mapbox.style+json'
-                rel: 'stylesheet'
-              - href: 'https://example.com/api/1.0/styles/night?f=sld10'
-                type: 'application/vnd.ogc.sld+xml;version=1.0'
-                rel: 'stylesheet'
-              - href: 'https://example.com/api/1.0/styles/night/metadata?f=json'
-                type: 'application/json'
-                rel: 'describedBy'
-            - id: 'topographic'
-              title: 'Regular topographic style'
-              links:
-              - href: 'https://example.com/api/1.0/styles/topographic?f=mapbox'
-                type: 'application/vnd.mapbox.style+json'
-                rel: 'stylesheet'
-              - href: 'https://example.com/api/1.0/styles/topographic?f=sld10'
-                type: 'application/vnd.ogc.sld+xml;version=1.0'
-                rel: 'stylesheet'
-              - href: 'https://example.com/api/1.0/styles/topographic/metadata?f=json'
-                type: 'application/json'
-                rel: 'describedBy'
-    style-set-entry:
-      type: object
-      nullable: true
-      required:
-        - id
-        - links
-      properties:
-        id:
-          type: string
-          nullable: true
-        title:
-          type: string
-          nullable: true
-        links:
-          type: array
-          nullable: true
-          minItems: 1
-          items:
-            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/link'
