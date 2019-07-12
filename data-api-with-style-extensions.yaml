@@ -347,7 +347,9 @@ components:
       - type: object
         properties:
           styles:
-            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0#/components/schemas/style-set'
+            type: array
+            items:
+              $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0#/components/schemas/style-set-entry'
           defaultStyle:
             type: string
             description: |-
@@ -357,7 +359,10 @@ components:
       type: object
       properties:
         styles:
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/style-set'
+          type: array
+          nullable: true
+          items:
+            $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0#/components/schemas/style-set-entry'
         defaultStyle:
           type: string
           nullable: true
