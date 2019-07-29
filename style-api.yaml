@@ -351,17 +351,16 @@ paths:
               schema:
                 $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/confClasses'
               example:
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/core'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/html'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/json'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-styles'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/style-validation'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/resources'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-resources'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/mapbox-styles'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-10'
-                - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-11'
-
+                conformsTo:
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/core'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/json'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-styles'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/style-validation'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/resources'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-resources'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/mapbox-styles'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-10'
+                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-11'
         '400':
           description: |-
             invalid or unknown query parameters
