@@ -693,8 +693,8 @@ paths:
         
         ```
         {
-          "pointOfContact": "Jane Doe"
-          "accessConstraints": "restricted"
+          "pointOfContact": "Jane Doe",
+          "accessConstraints": "restricted",
           "dates": {
             "revision": "2019-05-17T11:46:12Z"
           }
@@ -706,8 +706,8 @@ paths:
 
         ```
         {
-          "pointOfContact": null
-          "accessConstraints": null
+          "pointOfContact": null,
+          "accessConstraints": null,
           "dates": {
             "revision": null
           }
