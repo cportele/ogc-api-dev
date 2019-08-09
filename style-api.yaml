@@ -337,7 +337,7 @@ paths:
       description: |-
         List of all conformance classes specified in a specification 
         that the server conforms to.
-      operationId: getConformanceClasses
+      operationId: getConformanceDeclaration
       parameters:
         - $ref: '#/components/parameters/f-json'
       responses:
