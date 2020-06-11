@@ -4,7 +4,8 @@ servers:
     url: https://virtserver.swaggerhub.com/cportele/opf-features-api/1.0.0
 info:
   title: |-
-    A Web API implementing OGC API Features with extensions for OGC API Styles
+    A Web API implementing OGC API Features with extensions for 
+    OGC API Styles (DRAFT)
   description: |-
     This is a draft of an extension to 
     [OGC API - Features](https://github.com/opengeospatial/ogcapi-features)
