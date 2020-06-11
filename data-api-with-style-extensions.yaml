@@ -1,17 +1,16 @@
-openapi: 3.0.1
-# Revisions:
-# 2019-05-09 initial version
-# 2019-05-11 add PATCH semantics
-# 2019-07-12 update OGC API Features to 1.0.0-draft.2 and removed the tile resource
+openapi: 3.0.3
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-features-api/1.0.0
 info:
   title: |-
-    Open Portrayal Framework Features API (DRAFT)
+    A Web API implementing OGC API Features with extensions for OGC API Styles
   description: |-
-    This is a draft of the OGC Testbed-15 Features API extensions 
-    to support styles in the Open Portrayal Framework task.
+    This is a draft of an extension to 
+    [OGC API - Features](https://github.com/opengeospatial/ogcapi-features)
+    to support the use of styles. 
+    
+    The extensions are currently specified in the draft [OGC API - Styles](https://github.com/opengeospatial/ogcapi-styles) specification.
     
     The extensions are the following.
     * The feature collection metadata (path `/collections/{collectionId}`) 
@@ -24,9 +23,6 @@ info:
     * The queryables resource (path `/collections/{collectionId}/queryables`)
     has been added to support clients like visual style editors to construct 
     expressions for selection criteria in queries on features in the collection.
-
-    For more background information see [the Vector Tiles Pilot Extension Engineering 
-    Report](http://docs.opengeospatial.org/per/18-101.html#StylesAPI).
 
     This document is also available in [GitHub](https://github.com/cportele/t15-opf/blob/master/data-api-with-style-extensions.yaml).
 
@@ -58,9 +54,9 @@ paths:
         - $ref: '#/components/parameters/f'
       responses:
         '200':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/LandingPage'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/LandingPage'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
   '/conformance':
     get:
       summary: information about specifications that this API conforms to
@@ -74,9 +70,9 @@ paths:
         - Capabilities
       responses:
         '200':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ConformanceDeclaration'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ConformanceDeclaration'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
   '/collections':
     get:
       tags:
@@ -87,9 +83,9 @@ paths:
         - $ref: '#/components/parameters/f'
       responses:
         '200':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/Collections'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/Collections'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
   '/collections/{collectionId}':
     get:
       tags:
@@ -111,9 +107,9 @@ paths:
               schema:
                 type: string
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
     patch:
       tags:
         - Capabilities
@@ -187,14 +183,16 @@ paths:
               $ref: '#/components/schemas/collection-patch'
       responses:
         '204':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/Updated'
+          description: |-
+            The style information has been updated.
         '400':
           description: |-
             Malformed patch document.
         '401':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/UnauthorizedAccess'
+          description: |-
+            Unauthorized Access
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/NotFound'
         '415':
           description: |-
             Unsupported patch document.
@@ -210,7 +208,7 @@ paths:
             to be valid, but the server is incapable of processing 
             the request.
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
   '/collections/{collectionId}/queryables':
     get:
       tags:
@@ -283,9 +281,9 @@ paths:
               schema:
                 type: string
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
   '/collections/{collectionId}/items':
     get:
       tags:
@@ -295,9 +293,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/collectionId'
         - $ref: '#/components/parameters/f'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/limit'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/bbox'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/datetime'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/parameters/limit'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/parameters/bbox'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/parameters/datetime'
         - name: f_code
           in: query
           description: Filter the collection by f_code
@@ -308,11 +306,11 @@ paths:
             type: string
       responses:
         '200':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/Features'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/Features'
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
   '/collections/{collectionId}/items/{featureId}':
     get:
       tags:
@@ -321,9 +319,9 @@ paths:
       operationId: getFeature
       parameters:
         - $ref: '#/components/parameters/collectionId'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/featureId'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/parameters/featureId'
         - $ref: '#/components/parameters/f'
-        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/parameters/properties'
+        - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/parameters/properties'
       responses:
         '200':
           description: |-
@@ -331,19 +329,23 @@ paths:
           content:
             application/geo+json:
               schema:
-                $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/featureGeoJSON'
+                $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/schemas/featureGeoJSON'
             text/html:
               schema:
                 type: string
         '404':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/NotFound'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/NotFound'
         '500':
-          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/responses/ServerError'
+          $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/responses/ServerError'
 components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
   schemas:
     collection:
       allOf:
-      - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/collection'      
+      - $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0#/components/schemas/collection'      
       - type: object
         properties:
           styles:
