@@ -1,31 +1,19 @@
-openapi: 3.0.1
-# Revisions:
-# 2019-04-28 initial version
-# 2019-05-01 added support for symbols/sprites
-# 2019-05-02 added support for style validation
-# 2019-05-03 updated API definition based on the discussion in 
-#            the weekly call
-# 2019-05-09 updates to align queryables and style-set with the
-#            Feature/Tile API extensions; use SwaggerHub domains
-# 2019-05-11 add PATCH semantics
-# 2019-06-07 add validate parameter on PUT /styles/{styleId}
-# 2019-07-05 add descriptions how clients interact with the APIs
-# 2019-07-12 change /styles response from an array to an object
+openapi: 3.0.3
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/cportele/opf-style-api/1.0.0
 info:
   title: |-
-    Open Portrayal Framework Style API (DRAFT)
+    A Web API implementing OGC API Styles (DRAFT)
   description: |-
     # Overview
     
-    This is a draft of the OGC Testbed-15 Style API in the Open 
-    Portrayal Framework task. The Style API is a Web API for 
-    fetching and managing styles. 
+    This is a draft implementation of 
+    [OGC API - Styles](https://github.com/opengeospatial/ogcapi-styles) 
+    and supports the discovery, fetching and mutation of styles. 
     
-    The main consumers of this API in Testbed-15 are the 
-    following components.
+    The API has been designed to support the following components
+    as consumers:
 
     * **Visual style editors** create, update and delete styles 
     for datasets that are shared by other Web APIs implementing 
@@ -73,15 +61,18 @@ info:
     Styles or OGC SLD. Temporary media types in the vnd-branch
     are used for now.
 
-    For more background information see [the Vector Tiles Pilot Extension 
-    Engineering Report](http://docs.opengeospatial.org/per/18-101.html#StylesAPI).
+    For more background information see the 
+    [OGC Testbed 15 Portrayal Summary Engineering Report](http://docs.opengeospatial.org/per/19-018.html)
+    and the Engineering Reports linked from that report.
 
     The API is consistent with the emerging OGC API family of 
-    standards and could be a starting point for a future 
-    "OGC API - Styles" standard. API components that are used
+    standards and is currently the starting point for a future 
+    "OGC API - Styles" standard. 
+    
+    API components that are used
     by more than one of the draft API specifications are not
     defined in this document, but are defined in two domains on Swaggerhub 
-    ([OGC API - Features - Part 1: Core building blocks](https://app.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2) 
+    ([OGC API - Features - Part 1: Core building blocks](https://app.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0) 
     and [draft building blocks](https://app.swaggerhub.com/domains/cportele/ogcapi-draft-extensions/1.0.0)). 
     These are included by reference.
 
@@ -105,24 +96,18 @@ info:
     
     A dataset with topographic data according to the TDS specification 
     is avaiable via an API that implements the OGC API Features and Tiles specification 
-    ([landing page of the dataset](`https://services.interactive-instruments.de/t15/daraa`)).
+    ([landing page of the dataset](https://services.interactive-instruments.de/t15/daraa)).
     The dataset covers the region of Daraa, Syria. The URI of the landing page is used as 
     `{data}` in the descriptions below.
     
-    In addition, a style repository is avaiable via an API that implements the Styles API 
-    specified in Testbed-15 
+    In addition, the API also contains a style repository
     ([landing page of the repository](`https://services.interactive-instruments.de/t15/daraa`)).
-    The URI of the landing page is used as `{styles}` in the descriptions below.
+    The URI of the landing page is used as `{styles}` in the descriptions below. 
     
+    In the sample implementation `{data}` and `{styles}` are the same API, but that does not have to be the case.
     
-    NOTE: The referenced API does not yet implement the specifications
-    drafted in Testbed-15. This is work in progress. A template 
-    for the updated specification of the Feature API is available
-    [here](https://app.swaggerhub.com/apis/cportele/opf-features-api/1.0.0). 
-    **TODO: update URIs once Testbed-15 implementations are available.**
-    
-    Roads are included in the data in the collection `transportationgroundcrv`
-    as [features with a property `f_code` with a value of `AP030`](https://services.interactive-instruments.de/t15/daraa/collections/transportationgroundcrv/items?f_code=AP030).
+    Roads are included in the data in the collection `TransportationGroundCrv`
+    as [features with a property `F_CODE` with a value of `AP030`](https://services.interactive-instruments.de/t15/daraa/collections/TransportationGroundCrv/items?F_CODE=AP030).
     
     ## A visual style editor creating a new style
     
@@ -130,7 +115,7 @@ info:
     She knows the Daraa dataset and the data access API.
     
     After creating a new style, selecting the native stylesheet language for the style  
-    and identifying the `transportationgroundcrv` collection
+    and identifying the `TransportationGroundCrv` collection
     in the Daraa dataset as a sample data source, the visual style editor executes a request
     to `{data}/conformance` of the data access API to determine the API capabilities. Note that
     alternatively also the API definition may be inspected, but for a client that
@@ -143,29 +128,26 @@ info:
     
     * `http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core` and `http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson` 
     or 
-    * `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/conf/core` and `http://www.opengis.net/t15/ogcapi-tiles-1/1.0/conf/mvt`.
+    * `http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/core`.
     
-    The first one provides access to GeoJSON features via `{data}/collections/transportationgroundcrv/items`,
-    the second one provides access to MVT tiles via `{data}/collections/transportationgroundcrv/tiles`.
-    
-    NOTE: For conformance classes that have not yet been specified hypothetical URIs with "t15" 
-    instead of "spec" are used.
+    The first one provides access to GeoJSON features via `{data}/collections/TransportationGroundCrv/items`,
+    the second one provides access to MVT tiles via `{data}/collections/TransportationGroundCrv/tiles`.
     
     In addition, the visual style editor will look for the following conformance classes:
     
-    * `http://www.opengis.net/t15/ogcapi-features-n/1.0/conf/queryables`: If this conformance 
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/queryables`: If this conformance 
     class is supported, the visual style editor can specify styling rules that make use of
     feature properties. Otherwise all styling rules will apply to all features in each 
     collection.
-    * `http://www.opengis.net/t15/ogcapi-features-m/1.0/conf/style-links`: If this conformance 
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/style-links`: If this conformance 
     class is supported, the visual style editor will be able to create a link from the collection 
     to the newly created style.
     
     The editor will also request information about the features in the collection via a 
-    request to `{data}/collections/transportationgroundcrv`.
+    request to `{data}/collections/TransportationGroundCrv`.
     
-    If `http://www.opengis.net/t15/ogcapi-features-n/1.0/conf/queryables` is supported 
-    the queryables are retrieved via a request to `{data}/collections/transportationgroundcrv/queryables`.
+    If `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/queryables` is supported 
+    the queryables are retrieved via a request to `{data}/collections/TransportationGroundCrv/queryables`.
     
     Based on this information, the visual style editor is able to configure its user interface
     and guide the user through the creation of the style for road features and visualize 
@@ -179,28 +161,28 @@ info:
     At least the following conformance classes must be supported in order for sharing 
     the new style via the repository.
     
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/core`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/json`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-styles`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/core`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/json`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/manage-styles`
     
     In addition, if the style includes symbols or sprites, the repository also has to 
     support the following conformance classes:
     
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/resources`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-resources`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/resources`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/manage-resources`
     
     Finally, the repository has to support the native stylesheet language that the user 
     has selected for the style definition, i.e. one of:
     
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/mapbox-styles`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-10`
-    * `http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-11`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/mapbox-styles`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/sld-10`
+    * `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/sld-11`
     
     The visual style editor will ask the user for her credentials (username and password)
     in the style repository and use the credentials in any of the following POST/PUT/PATCH 
     requests.  
     
-    If `http://www.opengis.net/t15/opf-styles-1/1.0/conf/style-validation` is supported,
+    If `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/style-validation` is supported,
     the visual style editor can also offer validation of the draft style any time during the 
     drafting process using POST requests with the draft stylesheet to `{styles}/styles?validate=only`.
     
@@ -217,8 +199,8 @@ info:
     `{styles}/styles/{stylename}/metadata`. 
     
     If the data access API supports the conformance class 
-    `http://www.opengis.net/t15/ogcapi-features-m/1.0/conf/style-links`, the visual style editor 
-    will add a link to the new style using a PATCH request to `{data}/collections/transportationgroundcrv`.
+    `http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/style-links`, the visual style editor 
+    will add a link to the new style using a PATCH request to `{data}/collections/TransportationGroundCrv`.
     
     ## A visual style editor updating an existing style
     
@@ -229,7 +211,7 @@ info:
     from `{styles}/styles/{stylename}` (using the stylesheet language of choice) 
     and its metadata from `{styles}/styles/{stylename}/metadata`.
     * If the style metadata includes links to sample data 
-    (e.g., `{data}/collections/transportationgroundcrv`), the editor may use that data for 
+    (e.g., `{data}/collections/TransportationGroundCrv`), the editor may use that data for 
     sample visualizations and perhaps to determine changes to queryables. 
     The user may also select other data sources for these purposes.
     * Since an existing style is updated, the style definition will always be updated with 
@@ -239,7 +221,7 @@ info:
     ## A map client
     
     A map client that wants to visualize data for features or vector tiles for the collection
-    `{data}/collections/transportationgroundcrv` will look for a `styles` member in the 
+    `{data}/collections/TransportationGroundCrv` will look for a `styles` member in the 
     response. It will probably select one of the styles from the list taking the media types
     of the supported stylesheets into account and provide a capability so that users 
     can change the style. The stylesheet returned based on the `href` member of the link 
@@ -353,15 +335,15 @@ paths:
                 $ref: 'https://api.swaggerhub.com/domains/cportele/ogcapi-features-1/1.0.0-draft.2#/components/schemas/confClasses'
               example:
                 conformsTo:
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/core'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/json'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-styles'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/style-validation'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/resources'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/manage-resources'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/mapbox-styles'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-10'
-                  - 'http://www.opengis.net/t15/opf-styles-1/1.0/conf/sld-11'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/core'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/json'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/manage-styles'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/style-validation'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/resources'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/manage-resources'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/mapbox-styles'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/sld-10'
+                  - 'http://www.opengis.net/spec/ogcapi-styles-1/1.0/conf/sld-11'
         '400':
           description: |-
             invalid or unknown query parameters
