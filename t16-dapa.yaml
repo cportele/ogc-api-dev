@@ -1,7 +1,10 @@
 openapi: 3.0.3
 info:
   title: NOAA Global Historical Climatology Network Daily (GHCN-D)
-  description: 'Global Historical Climatology Network - Daily is a dataset from NOAA that contains daily observations over global land areas. It contains station-based measurements from land-based stations worldwide, about two thirds of which are for precipitation measurement only. Other meteorological elements include, but are not limited to, daily maximum and minimum temperature, temperature at the time of observation, snowfall and snow depth. It is a composite of climate records from numerous sources that were merged together and subjected to a common suite of quality assurance reviews. Some data are more than 175 years old.'
+  description: |-
+    Global Historical Climatology Network - Daily is a dataset from NOAA that contains daily observations over global land areas. It contains station-based measurements from land-based stations worldwide, about two thirds of which are for precipitation measurement only. Other meteorological elements include, but are not limited to, daily maximum and minimum temperature, temperature at the time of observation, snowfall and snow depth. It is a composite of climate records from numerous sources that were merged together and subjected to a common suite of quality assurance reviews. Some data are more than 175 years old.
+    
+    This OpenAPI document is also available on [GitHub](https://github.com/cportele/ogc-api-dev/blob/master/t16-dapa.yaml).
   contact:
     name: '<a href="https://www.interactive-instruments.de/">interactive instruments</a> for <a href="https://www.ogc.org/projects/initiatives/t-16">OGC Testbed-16</a>'
   license:
