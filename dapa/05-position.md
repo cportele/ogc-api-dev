@@ -64,7 +64,7 @@ variables=TMAX,TMIN,PRCP
 
 [Request GeoJSON](http://t16.ldproxy.net/ghcnd/collections/observation/dapa/position?coordRef=https%3A%2F%2Fnominatim.openstreetmap.org%2Fsearch%3Fq%3DWashington%26format%3Dgeojson%26limit%3D1&datetime=2019-08-01/2019-08-31&variables=TMAX,TMIN,PRCP&f=json)
 
-[Request CSV](http://t16.ldproxy.net/ghcnd/collections/observation/dapa/position?coordRef=https%3A%2F%2Fnominatim.openstreetmap.org%2Fsearch%3Fq%3DWashington%26format%3Dgeojson%26limit%3D1&datetime=2019-08-01/2019-08-31&variables=TMAX,TMIN,PRCP&f=json)
+[Request CSV](http://t16.ldproxy.net/ghcnd/collections/observation/dapa/position?coordRef=https%3A%2F%2Fnominatim.openstreetmap.org%2Fsearch%3Fq%3DWashington%26format%3Dgeojson%26limit%3D1&datetime=2019-08-01/2019-08-31&variables=TMAX,TMIN,PRCP&f=csv)
 
 ## Sample responses
 
