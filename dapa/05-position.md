@@ -211,18 +211,21 @@ For an interval, a time series:
 Below is a simple plot created from the time series data for August 2019 for a location using python.
 
 ```python
+import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
 
 baseUrl = 'http://t16.ldproxy.net/ghcnd/collections/observation/dapa'
-lon = '6.9299617'
-lat = '50.000008'
-datetime = '2019-08-01/2019-08-31'
+lon = '7.0218'
+lat = '49.9174'
+datetime = '2019-07-01/2019-08-31'
 variables = 'TMIN,TMAX,PRCP'
-ghcnd = gpd.read_file(baseUrl+'/position?coord=POINT('+lon+'%20'+lat+')&datetime='+datetime+'&variables='+variables)
+# either read as GeoJSON into GeoPandas or as CSV into Pandas
+# ghcnd = gpd.read_file(baseUrl+'/position?coord=POINT('+lon+'%20'+lat+')&datetime='+datetime+'&variables='+variables+'&f=json')
+ghcnd = pd.read_csv(baseUrl+'/position?coord=POINT('+lon+'%20'+lat+')&datetime='+datetime+'&variables='+variables+'&f=csv')
 pos = ghcnd
 pos.index = pos.phenomenonTime
-fig, ax = plt.subplots(figsize=(8, 8))
+fig, ax = plt.subplots(figsize=(16, 8))
 pos.TMAX.plot(label='max. Temperature [0.1°C]', legend='best').invert_xaxis()
 pos.TMIN.plot(label='min. Temperature [0.1°C]', legend='best').invert_xaxis()
 pos.PRCP.plot(kind='bar', label='Percipitation [0.1mm]', legend='best').invert_xaxis()
