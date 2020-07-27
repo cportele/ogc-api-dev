@@ -112,28 +112,28 @@ The default value is: `min,max,mean`.
 
 ### DAPA information
 
-| Path | Description and Link
+| DAPA Path | Description and Link
 | ---- | --------------------
-|`/dapa` | [Access information about the available data retrieval patterns - the DAPA landing page](03-dapa.md)
-|`/dapa/variables` | [Access information about the available variables](04-variables.md)
+|`/` | [Access information about the available data retrieval patterns - the DAPA landing page](03-dapa.md)
+|`/variables` | [Access information about the available variables](04-variables.md)
 
 ### Data retrieval
 
-| Path | Description and Link
+| DAPA Path | Description and Link
 | ---- | --------------------
-|`/dapa/position` | [Retrieve a time series for selected variables at a position](05-position.md)
-|`/dapa/area` | [Retrieve a time series for selected variables for each station in an area](06-area.md)
-|`/dapa/resample-to-grid` | [Retrieve a time series for selected variables for each station in an area and resample the observations to a time series for each cell in a 2D grid](07-grid.md)
+|`/position` | [Retrieve a time series for selected variables at a position](05-position.md)
+|`/area` | [Retrieve a time series for selected variables for each station in an area](06-area.md)
+|`/resample-to-grid` | [Retrieve a time series for selected variables for each station in an area and resample the observations to a time series for each cell in a 2D grid](07-grid.md)
 
 ### Data retrieval and processing (apply simple data processing functions on the data retrieval results)
 
-| Path | Description and Link
+| DAPA Path | Description and Link
 | ---- | --------------------
-|`/dapa/position:aggregate-time` | [Retrieve a time series for selected variables at a position and apply functions on the values for each variable](08-position-agg-time.md)
-|`/dapa/area:aggregate-time` | [Retrieve a time series for selected variables for each station in an area and apply functions on the values of each time series](09-area-agg-time.md)
-|`/dapa/area:aggregate-space` | [Retrieve a time series for selected variables for each station in an area and apply functions on the values of each time step](10-area-agg-space.md)
-|`/dapa/area:aggregate-space-time` | [Retrieve a time series for selected variables for each station in an area and apply functions on all values](11-area-agg-space-time.md)
-|`/dapa/resample-to-grid:aggregate-time` | [Retrieve a time series for selected variables for each station in an area, resample the observations to a time series in a 2D grid and apply functions on the values of each time series](12-grid-agg-time.md)
+|`/position:aggregate-time` | [Retrieve a time series for selected variables at a position and apply functions on the values for each variable](08-position-agg-time.md)
+|`/area:aggregate-time` | [Retrieve a time series for selected variables for each station in an area and apply functions on the values of each time series](09-area-agg-time.md)
+|`/area:aggregate-space` | [Retrieve a time series for selected variables for each station in an area and apply functions on the values of each time step](10-area-agg-space.md)
+|`/area:aggregate-space-time` | [Retrieve a time series for selected variables for each station in an area and apply functions on all values](11-area-agg-space-time.md)
+|`/resample-to-grid:aggregate-time` | [Retrieve a time series for selected variables for each station in an area, resample the observations to a time series in a 2D grid and apply functions on the values of each time series](12-grid-agg-time.md)
 
 ---
 [BACK](README.md)
