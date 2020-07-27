@@ -96,5 +96,27 @@ The response is shortened to two stations.
 }
 ```
 
+## Example use in python
+
+Below is a simple map created from the time series data for 2019 for a location using python.
+
+```python
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import contextily as ctx
+
+baseUrl = 'http://t16.ldproxy.net/ghcnd/collections/observation/dapa'
+bbox = '5.8,47.2,15.1,55.1'
+datetime = '2019-01-01/2019-12-31'
+variables = 'TMAX'
+ghcnd = gpd.read_file(baseUrl+'/area:aggregate-time?bbox='+bbox+'&datetime='+datetime+'&variables='+variables+'&f=json').to_crs(epsg=3857)
+ax2 = ghcnd.plot(column='TMAX_max', legend='best', cmap='coolwarm')
+ax2.tick_params(axis='both', which='both', left=False, right=False, bottom=False, top=False, labelleft=False, labelbottom=False)
+ctx.add_basemap(ax2)
+plt.show()
+```
+
+![Maximum temperature in Germany 2019](09-TMAX-Germany-2019.png)
+
 ---
 [BACK](README.md)
